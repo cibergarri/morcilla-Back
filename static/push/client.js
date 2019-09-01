@@ -20,12 +20,12 @@ async function run() {
     });
   console.log('Registered push');
 
-  // console.log('Sending push');
-  await fetch('/api/users/5d6af716920ef17c2ea4375c/subscribe', {
+  await fetch('/api/notifications/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDZiYjcyMzJhYzQyNDhkOTIxOTNiMjgiLCJnaXRodWJJZCI6IjIwMTU1NTY0IiwibmFtZSI6IkphdmllciBHYXJyaWRvIiwiaXNzIjoibW9yY2lsbGEiLCJhdWQiOiJtb3JjaWxsYS1jb25mLWhhY2thdGhvbi5oZXJva3VhcHAuY29tIiwiaWF0IjoxNTY3MzY1MjI0fQ.ONArsObN5EjdEL1sl6VWETrj9k4ObLhiZxeDfuzXOtg'
     }
   });
   console.log('Sent push');

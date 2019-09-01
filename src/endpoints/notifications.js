@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import passport from 'passport';
 import * as dbHelper from '../helpers/mongo/dbHelper';
 import { User } from '../models/user';
 import { logger } from '../helpers/winston/log';
@@ -12,26 +13,28 @@ notificationsRoute.use((req, res, next) => {
   next();
 });
 
-notificationsRoute.post('/subscribe', async (req, res) => {
-  try {
-    const { err, doc: user } = await dbHelper.findById(User, res.locals.userId);
-    if (err || !user) return res.status(404).json('user not found');
-    const subscription = new Subscription(req.body);
-    dbHelper.save(subscription)
-    
-    user.subscriptions = user.subscriptions || [];
-    user.subscriptions.push(subscription._id);
-    dbHelper.save(user);
-    return res.status(200).json({});
-  } catch(error){
-    console.error('error subscribing', error)
+notificationsRoute.post('/subscribe',
+  async (req, res) => {
+    try {
+      const user = await User.findById(req.user._id);
+      if (!user) return res.status(404).json('user not found');
+      const subscription = new Subscription(req.body);
+      dbHelper.save(subscription)
+      
+      user.subscriptions = user.subscriptions || [];
+      user.subscriptions.push(subscription._id);
+      dbHelper.save(user);
+      return res.status(200).json({subscription});
+    } catch(error){
+      console.error('error subscribing', error)
+    }
+    return;
   }
-  return;
-});
+);
 
 notificationsRoute.get('/test', async (req, res) => {
   try {
-    const user = await User.findById(res.locals.userId)
+    const user = await User.findById(req.user._id)
       .populate({ path: 'subscriptions' });
     if (!user) return res.status(404).json('user not found');
 
