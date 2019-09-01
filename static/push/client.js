@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
 async function run() {
   console.log('Registering service worker');
   const registration = await navigator.serviceWorker.
-    register('/subscribe/worker.js', {scope: '/subscribe/'});
+    register('/push/worker.js', {scope: '/push/'});
   console.log('Registered service worker');
 
   console.log('Registering push');

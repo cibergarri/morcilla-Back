@@ -16,4 +16,4 @@ export const routes = Router();
 // routes.use('/api-docs', docsRoute);
 routes.use('/api', apiRoutes);
 routes.get('/', rootRoute);
-routes.use('/subscribe', serve(__dirname + '../../../../static/subscribe'));
+routes.use('/push', serve(__dirname + '../../../../static/push'));
