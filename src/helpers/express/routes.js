@@ -17,4 +17,4 @@ export const routes = Router();
 routes.use('/api', apiRoutes);
 routes.get('/alive', rootRoute);
 routes.use('/push', serve(__dirname + '../../../../static/push'));
-routes.get('/', serve(__dirname + '../../../../app/dist'));
+routes.get('/', serve(__dirname + '../../../../app/dist/app'));
