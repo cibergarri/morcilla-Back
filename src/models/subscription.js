@@ -6,6 +6,7 @@ const SubscriptionSchema = new Schema({
   keys: {
     p256dh: { type: String },
     auth: { type: String },
-  }
+  },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 export const Subscription = model('Subscription', SubscriptionSchema);
