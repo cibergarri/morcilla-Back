@@ -11,7 +11,6 @@ export const useGitHubStrategy = () => {
       callbackURL: `${process.env.ENV_URL}/auth/github/callback`,
     },  async function(accessToken, refreshToken, profile, cb) {
       try {
-        console.log(profile);
         const { id: githubId, displayName: name } = profile;
 
         let user = await User.findOne({ githubId });
@@ -20,7 +19,7 @@ export const useGitHubStrategy = () => {
             githubId,
             name,
           };
-          logger.info('create user');
+          logger.info('creating user');
           user = new User(userData);      
           user = await user.save();
         }
