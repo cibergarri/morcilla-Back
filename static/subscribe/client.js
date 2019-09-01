@@ -20,8 +20,8 @@ async function run() {
     });
   console.log('Registered push');
 
-  console.log('Sending push');
-  await fetch('http://localhost:3000/api/users/5d6af716920ef17c2ea4375c/subscribe', {
+  // console.log('Sending push');
+  await fetch('/api/users/5d6af716920ef17c2ea4375c/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
