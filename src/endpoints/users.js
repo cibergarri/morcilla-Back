@@ -7,19 +7,16 @@ import { notificationsRoute } from './notifications';
 export const usersRoute = Router();
 
 usersRoute.use((req, res, next) => {
-  logger.info('User request', req.params);
   next();
 });
 
-usersRoute.post('/', (req, res) => {
-  const user = new User(req.body);
-  dbHelper.save(user)
-
-  return res.status(201).json(user);
+usersRoute.get('/', async (req, res) => {
+  const users = await User.find();
+  return res.status(200).json(users);
 });
 
-usersRoute.use('/:id', (req, res, next) => {
-  res.locals.userId = req.params.id;
-  next();
+usersRoute.get('/me', async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) return res.status(404).json('user not found');
+  return res.status(200).json(user);
 });
-usersRoute.use('/:id', notificationsRoute);
