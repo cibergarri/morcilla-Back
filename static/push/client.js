@@ -20,7 +20,8 @@ async function run() {
     });
   console.log('Registered push');
 
-  await fetch('/api/notifications/subscribe', {
+  // FALLA, NECESITA UN TOKEN ACTUALIZADO CADA VEZ:
+  await fetch('/api/notifications/push/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
