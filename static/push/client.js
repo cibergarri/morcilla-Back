@@ -25,7 +25,7 @@ async function run() {
     body: JSON.stringify(subscription),
     headers: {
       'content-type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDZiYjcyMzJhYzQyNDhkOTIxOTNiMjgiLCJnaXRodWJJZCI6IjIwMTU1NTY0IiwibmFtZSI6IkphdmllciBHYXJyaWRvIiwiaXNzIjoibW9yY2lsbGEiLCJhdWQiOiJtb3JjaWxsYS1jb25mLWhhY2thdGhvbi5oZXJva3VhcHAuY29tIiwiaWF0IjoxNTY3MzY1MjI0fQ.ONArsObN5EjdEL1sl6VWETrj9k4ObLhiZxeDfuzXOtg'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDZiYjcyMzJhYzQyNDhkOTIxOTNiMjgiLCJnaXRodWJJZCI6IjIwMTU1NTY0IiwibmFtZSI6IkphdmllciBHYXJyaWRvIiwiaXNzIjoibW9yY2lsbGEiLCJhdWQiOiJtb3JjaWxsYS1jb25mLWhhY2thdGhvbi5oZXJva3VhcHAuY29tIiwiaWF0IjoxNTY3MzcwMjM0fQ.iv_jJ_BUjJlfLRwvyxssafVMNySYlRKW2XmyIJAp-eQ'
     }
   });
   console.log('Sent push');
