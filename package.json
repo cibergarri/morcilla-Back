@@ -10,6 +10,7 @@
     "test": "set NODE_ENV=TEST && nyc mocha test/tests --recursive",
     "clean": "rimraf build && mkdir build",
     "build": "npm run clean && babel src --out-dir build",
+    "build-front": "cd app && npm run build",
     "start": "node build/index.js",
     "debug": "nodemon --inspect --exec babel-node debug.js",
     "lint": "./node_modules/.bin/eslint src test",

@@ -7,6 +7,7 @@ install:
   # - npm run test
 script:
   - npm run build
+  - npm run build-front
 cache:
   directories:
     - node_modules
