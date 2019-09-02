@@ -8,7 +8,7 @@ export const useGitHubStrategy = () => {
     new GitHubStrategy({
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: `${process.env.ENV_URL}/auth/github/callback`,
+      callbackURL: `${process.env.ENV_URL}/home`,
     },  async function(accessToken, refreshToken, profile, cb) {
       try {
         const { id: githubId, displayName: name } = profile;
