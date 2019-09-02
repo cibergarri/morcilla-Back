@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-landing-page',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingPageComponent implements OnInit {
 
-  constructor() { }
+  gitLoginUrl: string;
+  constructor() { 
+    this.gitLoginUrl = environment.apiUrl + "/auth/github";
+
+  }
 
   ngOnInit() {
   }
