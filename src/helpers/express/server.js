@@ -15,8 +15,8 @@ export const initServer = async () => {
       console.log('cors activated')
       app.use(cors());
     }
-    app.use(bodyParser.urlencoded({ extended: true, limit: '16mb' }));
-    app.use(bodyParser.json({ limit: '16mb' }));
+    app.use('/api', bodyParser.urlencoded({ extended: true, limit: '16mb' }));
+    app.use('/api', bodyParser.json({ limit: '16mb' }));
     initializePassport(app);
     app.use(routes);    
     const server = app.listen(portNumber, () => {
