@@ -12,7 +12,7 @@ export const useGitHubStrategy = () => {
     },  async function(accessToken, refreshToken, profile, cb) {
       try {
         const { id: githubId, displayName: name } = profile;
-
+        console.info('profile info', profile);
         let user = await User.findOne({ githubId });
         if(!user) {
           const userData = {
