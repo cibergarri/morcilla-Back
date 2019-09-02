@@ -21,10 +21,6 @@ authRoute.use((req, res, next) => {
 
 authRoute.get('/github', passport.authenticate('github'));
 
-authRoute.get('/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/' }),
-  createToken);
-
 authRoute.post('/github/token', 
   passport.authenticate('github', { failureRedirect: '/' }),
   createToken);

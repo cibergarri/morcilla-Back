@@ -11,13 +11,21 @@ export const useGitHubStrategy = () => {
       callbackURL: `${process.env.ENV_URL}/home`,
     },  async function(accessToken, refreshToken, profile, cb) {
       try {
-        const { id: githubId, displayName: name } = profile;
-
+        const {
+          id: githubId,
+          displayName = '',
+          username,
+          photos = [],
+          _json: { email },
+        } = profile;
+        logger.info('profile info from github %o', profile);
         let user = await User.findOne({ githubId });
         if(!user) {
           const userData = {
             githubId,
-            name,
+            name: displayName || username,
+            photo: photos[0] ? (photos[0].value || '') : '',
+            email
           };
           logger.info('creating user');
           user = new User(userData);      
