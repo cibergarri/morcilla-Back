@@ -23,6 +23,6 @@ routes.get('/alive', rootRoute);
 routes.use('/auth', authRoute);
 routes.use('/push', express.static(process.cwd() + '/static/push'));
 routes.get('*', function(req, res) {
-  res.sendfile('./app/dist/app/index.html')
+  res.sendfile('./app/dist/app/')
 })
 // routes.use(express.static(process.cwd() + '/app/dist/app'));
