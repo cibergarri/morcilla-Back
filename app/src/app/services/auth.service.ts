@@ -10,7 +10,7 @@ export class AuthService {
 constructor(private http: HttpClient) { }
 
 getToken(code: string){
-  return this.http.post<any>(environment.apiUrl+`/github/token?code=${code}`, {});
+  return this.http.post<any>(environment.apiUrl+`/auth/github/token?code=${code}`, {});
 }
 
 }
