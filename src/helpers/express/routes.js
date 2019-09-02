@@ -22,5 +22,5 @@ export const routes = Router();
 routes.use('/api', passport.authenticate('jwt', { session: false }), apiRoutes);
 routes.get('/alive', rootRoute);
 routes.use('/auth', authRoute);
-routes.use('/push', serve(__dirname + '../../../../static/push'));
-routes.use('/', serve(__dirname + '../../../../app/dist/app'));
+routes.use('/push', serve(process.cwd() + '/static/push'));
+routes.use('/', serve(process.cwd() + '/app/dist/app'));
