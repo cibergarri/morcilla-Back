@@ -14,16 +14,17 @@ export const useGitHubStrategy = () => {
         const {
           id: githubId,
           displayName = '',
-          username,
+          username = '',
           photos = [],
-          _json: { email },
+          _json,
         } = profile;
+        const email = (_json || {}).email || '';
         logger.info('profile info from github %o', profile);
         let user = await User.findOne({ githubId });
         if(!user) {
           const userData = {
             githubId,
-            name: displayName || username,
+            name: displayName || username || 'John Doe',
             photo: photos[0] ? (photos[0].value || '') : '',
             email
           };
