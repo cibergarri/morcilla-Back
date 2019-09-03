@@ -10,7 +10,7 @@ export const authRoute = Router();
 
 const createToken = (req, res) => {
   const {_id: sub, githubId, name } = req.user;
-  const token = jwt.sign({ sub, githubId, name, iss, aud }, secret);
+  const token = jwt.sign({ sub, githubId, name, iss, aud }, secret,{ expiresIn: '2h' });
   res.status(201).json(token);
 }
 
