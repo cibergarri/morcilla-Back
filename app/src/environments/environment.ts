@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://morcilla-conf-hackathon.herokuapp.com'
+  apiUrl: 'https://morcilla-conf-hackathon.herokuapp.com',
+  httpTimeout: 40000, //millis
 };
 
 /*

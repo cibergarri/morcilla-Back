@@ -1,4 +1,72 @@
-<p>home-page works!
+<mat-toolbar color="primary" class="menu-bar">
 
-    {{authResponse}}
-</p>
+    <span>App</span>
+
+    <span class="example-spacer"></span>
+
+    <div fxShow="true" fxHide.lt-md="true">
+        <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+        <a mat-button routerLink="/home" routerLinkActive="active-link">
+            <mat-icon aria-hidden="false" aria-label="">question_answer</mat-icon>
+            Preguntas
+        </a>
+        <a mat-button routerLink="/stats" routerLinkActive="active-link">
+            <mat-icon aria-hidden="false" aria-label="">bar_chart</mat-icon>
+            Estadísticas
+        </a>
+        <button mat-button (click)="auth.logout()">
+            <mat-icon aria-label="logout">power_settings_new</mat-icon>
+        </button>
+    </div>
+
+    <div fxShow="true" fxHide.gt-sm="true">
+        <button mat-button (click)="sidenav.toggle()">
+            <mat-icon aria-hidden="false" aria-label="menu">menu</mat-icon>
+        </button>
+    </div>
+
+</mat-toolbar>
+
+<mat-sidenav-container fxFlexFill class="side-nav-container">
+    <mat-sidenav #sidenav fxLayout="column" class="side-nav" position="end">
+        <div fxLayout="column">
+            <button (click)="sidenav.toggle()" mat-raised-button>Cerrar</button>
+            <a routerLink="/home" routerLinkActive="active-link" mat-button>
+                <mat-icon aria-hidden="false" aria-label="">question_answer</mat-icon>
+                Preguntas
+
+            </a>
+            <a routerLink="/stats" routerLinkActive="active-link" mat-button>
+                <mat-icon aria-hidden="false" aria-label="">bar_chart</mat-icon>
+                Estadísticas
+            </a>
+            <button mat-button (click)="auth.logout()">
+                <mat-icon aria-label="logout">power_settings_new</mat-icon>
+                Salir
+            </button>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+            <div class="m-1">
+                <h4>Mis preguntas</h4>
+            </div>
+            <div fxFlex fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="row wrap">
+                    <!-- loop over the cardList and show the cards -->
+                    <div *ngFor="let card of [1,2,3,4]" fxFlex="25" fxFlex.md="33" fxFlex.sm="50" fxFlex.xs="100"
+                        fxLayout="column" style="padding: 5px;">
+                        <!-- cards here -->
+                        <mat-card class="mat-elevation-z1">
+                            <mat-card-title> {{ card?.title }} </mat-card-title>
+                            <mat-card-content> {{ card?.description }} </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button color="primary">
+                                    Ver Respuestas
+                                </button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

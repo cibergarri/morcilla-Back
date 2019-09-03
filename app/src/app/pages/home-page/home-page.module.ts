@@ -1,3 +1,4 @@
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,6 +18,7 @@ const routes: Routes = [
     CommonModule,
     SharedModule,
     FormsModule,
+    FlexLayoutModule,
     RouterModule.forChild(routes)
   ]
 })
