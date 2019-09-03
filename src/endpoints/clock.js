@@ -38,9 +38,65 @@ clockRoute.get('/me', async (req, res, next) => {
       to  = moment().hours(23).minutes(59).seconds(59),
     } = req.query;
     
-    const clocks = await Clock.find({ hour: { $gte: from.format(), $lte: to.format() }, user: req.user._id });
+    const clocks = await Clock
+    .find({ hour: { $gte: moment(from).format(), $lte: moment(to).format() }, user: req.user._id })
+    .sort({ hour: -1 });;
 
     return res.status(200).json(clocks || []);
+  } catch(error){
+    next(error);
+  }
+});
+
+clockRoute.get('/summary', async (req, res, next) => {
+  try {
+    const {
+      from = moment().add('d', -7).hours(0).minutes(0).seconds(0),
+      to  = moment().hours(23).minutes(59).seconds(59),
+    } = req.query;
+    
+    const clocks = await Clock
+      .find({ hour: { $gte: moment(from).format(), $lte: moment(to).format() }, user: req.user._id });
+
+    const clocksByDay = clocks.reduce((total, clock) => {
+      const hour = moment(clock.hour);
+      const date = hour.format('DD/MM/YYYY');
+      total[date] = total[date] || [];
+      total[date].push(clock);
+      return total;
+    }, {});
+    const summary = {}
+    for(const day in clocksByDay){
+       const dayResult = clocksByDay[day]
+        .reduce((result, clock)=> {
+          const hour = moment(clock.hour);
+          if(clock.type === CLOCK_OPS.IN){
+            if(result.start){
+              result.smm.push(`${result.start.format('HH:mm:ss')} - XX:XX:XX (duration = ???)`);
+            }
+            result.start = hour;
+            return result;
+          } else {
+            if(!result.start){
+              result.smm.push(`XX:XX:XX - ${hour.format('HH:mm:ss')} (duration = ???)`);
+            } else {
+              const diff = hour.diff(result.start, 'minutes');
+              result.minutes += diff
+              result.smm.push(`${result.start.format('HH:mm:ss')} - ${hour.format('HH:mm:ss')} (duration = ${diff} minutes)`);
+            }
+            
+          }
+          result.start = null;
+          return result;
+        }, { smm: [], start: null, minutes: 0 });
+      if (dayResult.start) {
+        dayResult.smm.push(`${dayResult.start.format('HH:mm:ss')} - XX:XX:XX (duration = ???)`);
+        dayResult.start = null;
+      }
+      summary[day] = { schedule: dayResult.smm, hours: (dayResult.minutes /60).toFixed(2)};
+    }
+    
+    return res.status(200).json(summary);
   } catch(error){
     next(error);
   }
