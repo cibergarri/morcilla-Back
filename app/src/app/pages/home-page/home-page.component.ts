@@ -12,7 +12,7 @@ export class HomePageComponent implements OnInit {
 
   authResponse;
 
-  constructor(route: ActivatedRoute, private auth: AuthService, private alertsService:AlertsService) {
+  constructor(route: ActivatedRoute, public auth: AuthService, private alertsService:AlertsService) {
     const code = route.snapshot.queryParams.code;
     if(code){
       this.auth.getToken(code).subscribe(e => { 

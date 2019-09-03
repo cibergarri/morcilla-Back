@@ -1,0 +1,23 @@
+mat-toolbar.menu-bar{
+    justify-content: space-between;
+}
+
+.side-nav button, .side-nav a{
+    padding-left:2rem;
+    padding-right:2rem;
+}
+
+.active-link{
+    color:white;
+}
+
+
+
+.side-nav .active-link{
+    color:gray;
+}
+
+mat-sidenav-content{
+    display: block !important;
+}
+
