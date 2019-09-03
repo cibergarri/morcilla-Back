@@ -1,7 +1,6 @@
 import { Router } from 'express';
-
-import * as dbHelper from '../helpers/mongo/dbHelper';
 import { User } from '../models/user';
+import { getUserById } from '../queries/user';
 import { logger } from '../helpers/winston/log';
 import { Subscription } from '../models/subscription';
 import { webpush } from '../helpers/notifications/web-push';
@@ -25,6 +24,7 @@ notificationsRoute.post('/',
         type = isMandatory('type'),
         title = isMandatory('title'),
         body = isMandatory('body'),
+        question,
       } = req.body;
       const notifications = users.reduce((notifications, usr) => {
         if(usr !== origin) {
@@ -34,6 +34,7 @@ notificationsRoute.post('/',
             body,
             origin: origin._id,
             destination: usr._id,
+            ...(question && {question}),
           });
           notifications.push(notification);
         }
@@ -51,7 +52,7 @@ notificationsRoute.post('/',
 notificationsRoute.post('/push/subscribe',
   async (req, res) => {
     try {
-      const user = await User.findById(req.user._id);
+      const user = await getUserById(req.user._id);
       if (!user) return res.status(404).json('user not found');
       const subscriptionData = {
         ...req.body,
@@ -59,7 +60,7 @@ notificationsRoute.post('/push/subscribe',
       };
       const subscription = new Subscription(subscriptionData);
       await subscription.save();
-      return res.status(200).json({subscription});
+      return res.status(201).json({subscription});
     } catch(error){
       console.error('error subscribing', error)
     }

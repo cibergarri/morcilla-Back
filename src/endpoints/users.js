@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { logger } from '../helpers/winston/log';
 import { User } from '../models/user';
-import * as dbHelper from '../helpers/mongo/dbHelper';
-import { notificationsRoute } from './notifications';
 
 export const usersRoute = Router();
 

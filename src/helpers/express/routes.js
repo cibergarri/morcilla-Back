@@ -4,12 +4,19 @@ import passport from 'passport';
 import { authRoute } from '../../endpoints/auth';
 import { notificationsRoute } from '../../endpoints/notifications';
 import { usersRoute } from '../../endpoints/users';
+import { clockRoute } from '../../endpoints/clock';
+import { topicsRoute } from '../../endpoints/topics';
+import { questionsroute } from '../../endpoints/questions';
+import { answersRoute } from '../../endpoints/answers';
 // import { docsRoute } from '../swagger/docs';
 
 const apiRoutes = express.Router();
-apiRoutes.use('/users', usersRoute);
+apiRoutes.use('/answers', answersRoute);
+apiRoutes.use('/clock', clockRoute);
 apiRoutes.use('/notifications', notificationsRoute);
-
+apiRoutes.use('/questions', questionsroute);
+apiRoutes.use('/topics', topicsRoute);
+apiRoutes.use('/users', usersRoute);
 
 const rootRoute = (req, res) => {
   res.send('Welcome!');

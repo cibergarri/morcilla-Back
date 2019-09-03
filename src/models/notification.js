@@ -6,6 +6,7 @@ const NotificationSchema = new Schema({
   body: { type: String },
   origin: { type: Schema.Types.ObjectId, ref: 'User' },
   destination: { type: Schema.Types.ObjectId, ref: 'User' },
+  question: { type: Schema.Types.ObjectId, ref: 'Question' },
   status: {type: String, enum: ['pending', 'sent', 'errored'], default: 'pending'},
 });
 export const Notification = model('Notification', NotificationSchema);
