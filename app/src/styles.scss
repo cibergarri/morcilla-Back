@@ -1,24 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+/* You can add global styles to this file, and also import other style files */
+@import "theme-variables";
+/*Put values above*/
+@import "node_modules/bootstrap/scss/bootstrap";
 
-.p-1{
-    padding:1rem;
+body {
+  background-color: rgba(1, 121, 178, 0.02);
 }
 
-.p-2{
-    padding:2rem;
-}
-
-.m-1{
-    padding:1rem;
-}
-
-.m-2{
-    padding:2rem;
-}
-
-.text-center{
-    text-align: center;
+.clickable{
+  cursor: pointer;
 }

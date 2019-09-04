@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<p *ngFor="let alert of obsAlertsSrv.toasts" class="static-alerts" [@fadeInDownOutUp]>
+    <!--alerts-->
+    <ngb-alert [type]="alert.type" (close)="obsAlertsSrv.webCloseToast(alert)">{{ alert.text }}</ngb-alert>
+</p>
+<div class="app-root-child">
+    <ngx-loading-bar [color]="'#004c40'"></ngx-loading-bar>
+    <app-header-bar [(collapsed)]="barIsCollapsed" class="sticky-top"></app-header-bar>
+
+    <div id="main-content" class="flex-grow-1" style="position:relative;">
+
+        <div *ngIf="navigating || loadingApp" [@fadeInOut] style="z-index:99999;">
+            <img [src]="loaderImg" class="route-loading-icon" alt="Cargando..."/>
+        </div>
+        <div [hidden]="navigating || loadingApp" class="router-output">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

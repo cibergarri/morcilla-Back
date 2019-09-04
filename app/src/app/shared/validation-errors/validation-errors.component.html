@@ -1,0 +1,15 @@
+﻿<div *ngIf="control && control.dirty && control.invalid && control.errors">
+    <div class="form-control-feedback text-danger" *ngIf="control.errors.email">
+        Introduce un e-mail válido
+    </div>
+    <div class="form-control-feedback text-danger" *ngIf="control.errors.required">
+        Este campo es requerido
+    </div>
+    <div class="form-control-feedback text-danger" *ngIf="control.errors.minlength">
+        El texto introducido es demasiado corto
+    </div>
+    <div class="form-control-feedback text-danger" *ngIf="control.errors.pattern">
+        Formato incorrecto
+    </div>
+
+</div>

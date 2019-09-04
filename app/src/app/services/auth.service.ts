@@ -19,7 +19,8 @@ export class AuthService {
 
   getToken(code: string) {
     return this.http.post<string>(environment.apiUrl + `/auth/github/token?code=${code}`, {}).pipe(tap((token) => {
-      this.storeToken(token);
+      if(token)
+        this.storeToken(token);
       this.loginEvents.next(true);
     }));
   }
