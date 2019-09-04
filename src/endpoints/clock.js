@@ -15,13 +15,14 @@ clockRoute.use((req, res, next) => {
 clockRoute.get('/', async (req, res, next) => {
   try {
     const {
-      from = moment().add('d', -7).hours(0).minutes(0).seconds(0),
+      from = moment().add(-7, 'd').hours(0).minutes(0).seconds(0),
       to = moment().hours(23).minutes(59).seconds(59),
     } = req.query;
 
     const clocks = await Clock
       .find({ hour: { $gte: from.format(), $lte: to.format() } })
       .populate('user', 'name')
+      .populate('project', 'name')
       .sort({ hour: -1 });
 
     return res.status(200).json(clocks);
@@ -33,12 +34,13 @@ clockRoute.get('/', async (req, res, next) => {
 clockRoute.get('/me', async (req, res, next) => {
   try {
     const {
-      from = moment().add('d', -7).hours(0).minutes(0).seconds(0),
+      from = moment().add(-7, 'd').hours(0).minutes(0).seconds(0),
       to = moment().hours(23).minutes(59).seconds(59),
     } = req.query;
 
     const clocks = await Clock
       .find({ hour: { $gte: moment(from).format(), $lte: moment(to).format() }, user: req.user._id })
+      .populate('project', 'name')
       .sort({ hour: -1 }); ;
 
     return res.status(200).json(clocks || []);
@@ -50,12 +52,20 @@ clockRoute.get('/me', async (req, res, next) => {
 clockRoute.get('/summary', async (req, res, next) => {
   try {
     const {
-      from = moment().add('d', -7).hours(0).minutes(0).seconds(0),
+      from = moment().add(-7, 'd').hours(0).minutes(0).seconds(0),
       to = moment().hours(23).minutes(59).seconds(59),
     } = req.query;
 
+    const filter = {
+      hour: {
+        $gte: moment(from).format(),
+        $lte: moment(to).format(),
+      },
+      user: req.user._id,
+    };
     const clocks = await Clock
-      .find({ hour: { $gte: moment(from).format(), $lte: moment(to).format() }, user: req.user._id });
+      .find(filter)
+      .populate('project', 'name');
 
     const clocksByDay = clocks.reduce((total, clock) => {
       const hour = moment(clock.hour);
@@ -70,28 +80,61 @@ clockRoute.get('/summary', async (req, res, next) => {
         .reduce((result, clock) => {
           const hour = moment(clock.hour);
           if (clock.type === CLOCK_OPS.IN) {
-            if (result.start) {
-              result.smm.push(`${result.start.format('HH:mm:ss')} - XX:XX:XX (duration = ???)`);
+            if (result.lastStart) { // two 'ins' in a row
+              result.smm.push({
+                start: result.lastStart,
+                end: null,
+                duration: 0,
+                project: result.currentProject,
+              });
             }
-            result.start = hour;
+            result.currentProject = clock.project;
+            result.lastStart = hour;
             return result;
-          } else {
-            if (!result.start) {
-              result.smm.push(`XX:XX:XX - ${hour.format('HH:mm:ss')} (duration = ???)`);
-            } else {
-              const diff = hour.diff(result.start, 'minutes');
-              result.minutes += diff;
-              result.smm.push(`${result.start.format('HH:mm:ss')} - ${hour.format('HH:mm:ss')} (duration = ${diff} minutes)`);
-            }
+          } else if (!result.lastStart) { // two 'outs' in a row
+            result.smm.push({
+              start: null,
+              end: hour.format('HH:mm:ss'),
+              duration: 0,
+              project: null,
+            });
+          } else { // 'in' & 'out'
+            const diff = hour.diff(result.lastStart, 'minutes');
+            result.minutes += diff;
+            result.smm.push({
+              start: result.lastStart.format('HH:mm:ss'),
+              end: hour.format('HH:mm:ss'),
+              duration: diff,
+              project: result.currentProject,
+            });
           }
-          result.start = null;
+          result.lastStart = null;
+          result.currentProject = null;
           return result;
-        }, { smm: [], start: null, minutes: 0 });
-      if (dayResult.start) {
-        dayResult.smm.push(`${dayResult.start.format('HH:mm:ss')} - XX:XX:XX (duration = ???)`);
-        dayResult.start = null;
+        }, { smm: [], lastStart: null, minutes: 0, currentProject: null });
+
+      if (dayResult.lastStart) { // last 'in' without 'out'
+        dayResult.smm.push({ start: dayResult.lastStart, end: null, duration: 0 });
+        dayResult.lastStart = null;
       }
-      summary[day] = { schedule: dayResult.smm, hours: (dayResult.minutes / 60).toFixed(2) };
+      const getHoursMinutes = (mins) => ({
+        hours: Math.floor(mins / 60),
+        minutes: mins % 60,
+      });
+      const durationsByProject = dayResult.smm
+        .reduce((resultsByProj, proj) => {
+          const projName = proj.project ? proj.project.name : '-';
+          resultsByProj[projName] = (resultsByProj[projName] || 0) + proj.duration;
+          return resultsByProj;
+        }, {});
+      for (const [key, value] of Object.entries(durationsByProject)) {
+        durationsByProject[key] = getHoursMinutes(value);
+      }
+      summary[day] = {
+        schedule: dayResult.smm,
+        total: getHoursMinutes(dayResult.minutes),
+        totalsByProject: durationsByProject,
+      };
     }
 
     return res.status(200).json(summary);
@@ -107,7 +150,9 @@ clockRoute.post('/in', async (req, res, next) => {
       return res.status(409).json({ error: 'user already active' });
     }
     user.status = USER_STATUS.ACTIVE;
-    const clock = new Clock({ type: CLOCK_OPS.IN, user: req.user._id });
+
+    const { project } = req.body;
+    const clock = new Clock({ type: CLOCK_OPS.IN, user: req.user._id, project });
     await Promise.all([clock.save(), user.save()]);
 
     return res.status(201).json(clock);
