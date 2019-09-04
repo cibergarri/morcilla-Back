@@ -5,7 +5,7 @@ import { QuestionLite, NewQuestion } from './../../models/models-classes';
 import { AlertsService } from './../../services/alerts.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
@@ -23,12 +23,18 @@ export class HomePageComponent implements OnInit {
 
   constructor(route: ActivatedRoute, public auth: AuthService, private alertsService: AlertsService,
     public questionsService: QuestionsService, private modalService: NgbModal,
-    public topicsService: TopicsService) {
+    public topicsService: TopicsService, private router:Router) {
     const code = route.snapshot.queryParams.code;
     if (code) {
       this.auth.getToken(code).subscribe(e => {
         this.authResponse = e;
-        this.fetchQuestions();
+        this.router.navigate([], {
+          queryParams: {
+            yourParamName: null,
+            youCanRemoveMultiple: null,
+          },
+          queryParamsHandling: 'merge'
+        });
       }, (err) => this.alertsService.getErrorMessageForStatus(err));
     } else {
       this.fetchQuestions();
