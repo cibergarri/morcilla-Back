@@ -6,7 +6,7 @@
             </span>
             <span class="argentum ml-3">Título</span>
         </a>
-        <button class="btn btn-outline-primary navbar-toggler" type="button" (click)="changeCollapse()">
+        <button class="btn btn-outline-primary navbar-toggler" type="button" (click)="changeCollapse()" *ngIf="!isLoginRoute()">
             <fa-icon [icon]="'bars'"></fa-icon>
         </button>
 
