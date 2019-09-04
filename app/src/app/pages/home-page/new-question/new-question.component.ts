@@ -1,3 +1,4 @@
+import { PushService } from './../../../services/push.service';
 import { AlertsService, ToastType } from './../../../services/alerts.service';
 import { QuestionsService } from './../../../services/questions.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -18,7 +19,7 @@ export class NewQuestionComponent implements OnInit {
   @Input() topics : Topic[] = [];
 
   constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder,
-    public questionsService: QuestionsService,
+    public questionsService: QuestionsService, public push: PushService,
     public alertsService: AlertsService) { }
 
   ngOnInit() {
@@ -33,9 +34,11 @@ export class NewQuestionComponent implements OnInit {
       text: this.itemForm.value.text,
       topic: this.itemForm.value.topic || undefined,
     };
-    this.questionsService.newQuestion(newQues).subscribe(() => {
+    this.questionsService.newQuestion(newQues).subscribe((e) => {
       this.alertsService.showMessage("Pregunta creada", ToastType.SUCCESS);
-      this.activeModal.close();
+      this.push.push( { type:"push", title: "Tienes una nueva pregunta!", body:e._id  } )
+      .subscribe(() => this.activeModal.close(), () => this.activeModal.close());
+     
     }, err => this.alertsService.getErrorMessageForStatus(err));
   }
 

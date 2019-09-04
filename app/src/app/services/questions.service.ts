@@ -24,7 +24,7 @@ export class QuestionsService {
   }
 
   newQuestion(question: NewQuestion){
-    return this.http.post(environment.apiUrl + `/api/questions`, question);
+    return this.http.post<Question>(environment.apiUrl + `/api/questions`, question);
   }
 
 }

@@ -1,3 +1,4 @@
+import { PushService } from './services/push.service';
 import { AuthService } from './services/auth.service';
 import { Component } from '@angular/core';
 import { Event, Router, NavigationError, NavigationStart, NavigationEnd, NavigationCancel } from '@angular/router';
@@ -21,14 +22,17 @@ export class AppComponent {
   loaderImg = "assets/imgs/loader.svg";
 
   constructor(public obsAlertsSrv: AlertsService,
-    private router: Router, public auth: AuthService) {
+    private router: Router, public auth: AuthService, 
+    public push: PushService) {
     this.logoutSub = auth.logoutEvents.subscribe(() => {
       this.router.navigate(["/landing"]);
     });
     this.routeNavigation(router);
     if (!this.supportsSvg())
       this.loaderImg = "assets/imgs/loader.gif";
-    this.loadingApp = false;
+   
+    push.init().finally(() => this.loadingApp = false);
+   
   }
 
   private supportsSvg() {
@@ -38,10 +42,6 @@ export class AppComponent {
   ngOnDestroy() {
     this.logoutSub.unsubscribe();
   }
-
-  //isGenogramRoute() {
-  //  return this.router.url.match(/^\/home\/genograms\/[0-9]+$/);
-  //}
 
   routeNavigation(router: Router) {
     router.events.subscribe((event: Event) => {

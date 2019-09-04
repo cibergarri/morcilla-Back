@@ -5,6 +5,6 @@ self.addEventListener('push', ev => {
   console.log('Got push', data);
   self.registration.showNotification(data.title, {
     body: data.title,
-    icon: '/assets/imgs/morcilla.png'
+    icon: '/push/morcilla.jpg'
   });
 });

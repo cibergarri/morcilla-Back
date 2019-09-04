@@ -1,3 +1,4 @@
+import { PushService } from './services/push.service';
 import { AuthInterceptor } from './auth.interceptor';
 import { AlertsService } from './services/alerts.service';
 import { AuthService } from './services/auth.service';
@@ -47,6 +48,7 @@ library.add(fas, fab, far);
     AlertsService,
     QuestionsService, 
     TopicsService,
+    PushService,
     [{ provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
       { provide: LOCALE_ID, useValue: 'es-ES' }

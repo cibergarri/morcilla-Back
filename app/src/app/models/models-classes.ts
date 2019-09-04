@@ -40,3 +40,9 @@ export class Topic{
     title:string;
     description: string;
 }
+
+export class PushNotification{
+    type?:string = "push";
+    title:string;
+    body:string;
+}
