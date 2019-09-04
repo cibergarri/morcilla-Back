@@ -1,0 +1,19 @@
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.user-row img{
+    flex: 0 0 50px;
+    margin-right:12px;
+}
+
+.user-row > div{
+    flex: 1 1 auto;
+}
+
+.user-row > div p{
+    margin-right:12px;
+}

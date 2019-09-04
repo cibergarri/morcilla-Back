@@ -10,6 +10,7 @@
       <div class="card clickable m-2" (click)="getQuestionDetail(qu._id)">
         <div class="card-body">
           <h4 class="h4 card-title">{{qu.text}}</h4>
+          <div class="text-right text-muted">{{qu.createdAt | date:'medium'}}</div>
         </div>
       </div>
     </div>

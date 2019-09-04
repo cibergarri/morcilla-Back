@@ -4,6 +4,7 @@ export class QuestionLite{
     topic: string;
     text: string;
     user: string;
+    createdAt:string;
 }
 
 export class Question{
@@ -11,6 +12,7 @@ export class Question{
     topic: TopicReference;
     text: string;
     user: UserReference;
+    createdAt:string;
 }
 
 export class NewQuestion{
@@ -25,14 +27,16 @@ export class TopicReference {
 
 export class UserReference{
     _id: string;
-    name:string;
+    name?:string;
+    photo?:string;
 }
 
 export class Answer{
     _id: string;
     text:string;
     question: string;
-    user:string;
+    createdAt: string;
+    user:UserReference;
 }
 
 export class Topic{
