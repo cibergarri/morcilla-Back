@@ -1,17 +1,28 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="login-panel">
-    <div></div>
-    <mat-card fxFlex="0 1 500px">
-        <mat-card-header>
-            <mat-card-title>Acceder</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-        </mat-card-content>
-        <mat-card-actions fxLayout="row" fxLayoutAlign="center">
-            <a mat-raised-button [href]="gitLoginUrl" color="primary">
-                <mat-icon aria-hidden="false" aria-label="">home</mat-icon>
-                GitHub
-            </a>
-        </mat-card-actions>
-    </mat-card>
-    <div></div>
+<div class="container">
+
+
+    <div class="row m-3">
+
+        <div class="col-auto d-none d-sm-block pr-0 offset-md-1 offset-xl-2">
+            <div class="text-center">
+                <button type="button" class="btn btn-circle bc-sm btn-light" disabled style="border-radius: 5px">
+                    <fa-icon [icon]="['fa','key']" class="text-primary"></fa-icon>
+                </button>
+                <h6 class="mt-1"><strong>Acceso</strong></h6>
+            </div>
+        </div>
+        <div class="col col-xs-12 col-md-9 col-xl-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mt-3">
+                        <a  [href]="gitLoginUrl" class="btn btn-primary btn-circle bc-sm btn-block btn-lg">
+                            <fa-icon [icon]="['fab','github']"></fa-icon>
+                            Acceder
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>

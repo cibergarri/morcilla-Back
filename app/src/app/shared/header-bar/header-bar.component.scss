@@ -1,0 +1,48 @@
+@import 'theme-variables';
+
+.img-nav-icon {
+    width: 25px !important;
+    height: 25px !important;
+}
+
+@media(min-width:768px) {
+
+    header, .navbar {
+        transition: all 0.4s;
+    }
+
+    header:not(.active) > .navbar {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    header.active {
+        background-color:transparent !important;
+    }
+
+    header.active > .navbar{
+        /* Fallback for web browsers that don't support RGBa */
+        background-color: rgb(0, 0, 0) !important;
+        /* RGBa with 0.2 opacity */
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        /* For IE 5.5 - 7*/
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+        /* For IE 8*/
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+    }
+
+    header.active  a, header.active  button {
+        color: white;
+    }
+
+  
+
+}
+
+@media(max-width:768px) {
+.language-dropdown {
+   color: map-get($theme-colors, primary) !important;
+   background-color:white !important;
+   border: 0px;
+}
+}

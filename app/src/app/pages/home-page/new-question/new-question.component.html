@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h4 class="modal-title">Nueva pregunta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="itemForm" (ngSubmit)="save()" #itemFormTpl="ngForm" novalidate>
+        <div class="form-group">
+            <label for="text"><b>Escribe tu pregunta</b></label>
+            <textarea id="text" class="form-control" type="text" name="text" maxlength="800"
+                formControlName="text" placeholder="Tengo un problema relacionado con...">
+            </textarea>
+           
+        </div>
+
+        <div class="form-group">
+            <label>Tema</label>
+            <select class="form-control" formControlName="topic" name="topic">
+                    <option *ngFor="let c of topics" [value]="c._id">{{c.title}}</option>
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" [disabled]="!itemForm.valid || executing">
+                Nueva Pregunta
+            </button>
+        </div>
+    </form>
+</div>

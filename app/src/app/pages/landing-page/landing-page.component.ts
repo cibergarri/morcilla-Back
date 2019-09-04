@@ -11,7 +11,6 @@ export class LandingPageComponent implements OnInit {
   gitLoginUrl: string;
   constructor() { 
     this.gitLoginUrl = environment.apiUrl + "/auth/github";
-
   }
 
   ngOnInit() {

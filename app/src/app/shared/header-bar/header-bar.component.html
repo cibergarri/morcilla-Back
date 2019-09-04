@@ -1,0 +1,35 @@
+﻿<header class="pb-1 bg-primary sticky-top" [ngClass]="navbarActive">
+    <nav class="navbar navbar-expand-md bg-white header-navbar flex-wrap">
+        <a class="navbar-brand" [routerLink]="['/']" aria-label="Logo">
+            <span>
+                <!-- Logo goes here <img src="assets/imgs/logo.png" height="30" alt="Logo">-->
+            </span>
+            <span class="argentum ml-3">Título</span>
+        </a>
+        <button class="btn btn-outline-primary navbar-toggler" type="button" (click)="changeCollapse()">
+            <fa-icon [icon]="'bars'"></fa-icon>
+        </button>
+
+        <div class="navbar-collapse justify-content-end" [ngbCollapse]="collapsed">
+            <hr />
+            <ul class="navbar-nav">
+                <ng-container *ngIf="!isLoginRoute()">
+                    <!--Admin & users-->
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/home">
+                            <fa-icon [icon]="'question'"></fa-icon>
+                            Preguntas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link btn-block btn btn-link"
+                            style="text-align:start;border-top:0; border-bottom:0" (click)="logout()">
+                            <fa-icon [icon]="'sign-out-alt'"></fa-icon>
+                            Salir
+                        </button>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+    </nav>
+</header>

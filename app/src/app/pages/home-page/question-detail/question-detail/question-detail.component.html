@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ (question.text.length>30)? (question.text | slice:0:30)+'..':(question.text) }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class=""><b>{{question.text}}</b></div>
+  <div class="text-primary">{{question.topic?.title}}</div>
+  <br />
+
+  <ng-container *ngIf="answers?.length;else noAnswers" class="mb-0">
+    <h6 class="text-muted text-right mr-2">{{answers.length}} Respuestas</h6>
+    <div *ngFor="let an of answers;">
+      <p>{{an.text}}</p>
+      <hr />
+    </div>
+  </ng-container>
+  <ng-template #noAnswers>
+    <hr />
+    <p class="text-muted"><i>Nadie ha respondido todavía a tu pregunta :(</i></p>
+  </ng-template>
+</div>
