@@ -28,13 +28,7 @@ export class HomePageComponent implements OnInit {
     if (code) {
       this.auth.getToken(code).subscribe(e => {
         this.authResponse = e;
-        this.router.navigate([], {
-          queryParams: {
-            yourParamName: null,
-            youCanRemoveMultiple: null,
-          },
-          queryParamsHandling: 'merge'
-        });
+        this.router.navigate(["/questions"]);
       }, (err) => this.alertsService.getErrorMessageForStatus(err));
     } else {
       this.fetchQuestions();
