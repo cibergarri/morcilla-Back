@@ -1,3 +1,4 @@
+import { ClockInService } from './../../services/clock-in.service';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -15,7 +16,8 @@ export class HeaderBarComponent implements OnInit {
   navbarActive = "";
 
   constructor(public router: Router,
-    public auth: AuthService) {
+    public auth: AuthService,
+    public clockInService: ClockInService) {
   }
 
   ngOnInit() {
@@ -47,5 +49,11 @@ export class HeaderBarComponent implements OnInit {
     this.collapsedChange.next(this.collapsed);
   }
 
+  changeStatus(){
+    if(this.auth.currentUser.status === "inactive")
+      this.clockInService.clockIn().subscribe(() => this.auth.currentUser.status="active");
+    else
+    this.clockInService.clockOut().subscribe(() => this.auth.currentUser.status="inactive");
+  }
  
 }
