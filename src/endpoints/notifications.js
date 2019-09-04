@@ -15,7 +15,7 @@ notificationsRoute.use((req, res, next) => {
 });
 
 notificationsRoute.post('/',
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const users = await User.find();
       const origin = users.find(usr => usr.id === req.user.id);
@@ -26,31 +26,32 @@ notificationsRoute.post('/',
         body = isMandatory('body'),
         question,
       } = req.body;
-      const notifications = users.reduce((notifications, usr) => {
-        if(usr !== origin) {
-          const notification = new Notification({
-            type,
-            title,
-            body,
-            origin: origin._id,
-            destination: usr._id,
-            ...(question && {question}),
-          });
-          notifications.push(notification);
-        }
-        return notifications;
-      }, []);
+      const notifications = users
+        .reduce((ntfctns, usr) => {
+          if (usr !== origin) {
+            const notification = new Notification({
+              type,
+              title,
+              body,
+              origin: origin._id,
+              destination: usr._id,
+              ...(question && { question }),
+            });
+            ntfctns.push(notification);
+          }
+          return ntfctns;
+        }, []);
+
       const notificationsSaved = await Notification.create(notifications);
       return res.status(201).json(notificationsSaved);
-    } catch(error){
-      res.status(500).json(error.toString());
+    } catch (error) {
+      next(error);
     }
-    return;
   }
 );
 
 notificationsRoute.post('/push/subscribe',
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const user = await getUserById(req.user._id);
       if (!user) return res.status(404).json('user not found');
@@ -60,36 +61,34 @@ notificationsRoute.post('/push/subscribe',
       };
       const subscription = new Subscription(subscriptionData);
       await subscription.save();
-      return res.status(201).json({subscription});
-    } catch(error){
-      console.error('error subscribing', error)
+      return res.status(201).json({ subscription });
+    } catch (error) {
+      next(error);
     }
-    return;
   }
 );
 
-notificationsRoute.get('/push/test', async (req, res) => {
+notificationsRoute.get('/push/test', async (req, res, next) => {
   try {
-    const subscriptions = await Subscription.find({user: req.user._id });
+    const subscriptions = await Subscription.find({ user: req.user._id });
 
     const payload = JSON.stringify({ title: `testing ${req.user.name}` });
     const subscriptionsToRemove = [];
-    for(const subscription of subscriptions) {
+    for (const subscription of subscriptions) {
       await webpush.sendNotification(subscription, payload)
         .catch(error => {
           logger.warn(error.stack);
-          if(error.statusCode=== 410) {
+          if (error.statusCode === 410) {
             subscriptionsToRemove.push(subscription._id);
           }
         });
     }
-    if(subscriptionsToRemove.length) {
-      const { deletedCount } = await Subscription.deleteMany({_id: { $in: subscriptionsToRemove}});
+    if (subscriptionsToRemove.length) {
+      const { deletedCount } = await Subscription.deleteMany({ _id: { $in: subscriptionsToRemove } });
       logger.info(`${deletedCount} subscriptions removed`);
     }
     return res.status(200).json({});
-  } catch(error) {
-    console.error('error testing', error)
+  } catch (error) {
+    next(error);
   }
-  return res.status(500).json({});
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 console.log('Loaded service worker!');
 
 self.addEventListener('push', ev => {
@@ -5,6 +6,6 @@ self.addEventListener('push', ev => {
   console.log('Got push', data);
   self.registration.showNotification(data.title, {
     body: data.title,
-    icon: '/assets/imgs/morcilla.png'
+    icon: '/assets/imgs/morcilla.png',
   });
 });

@@ -9,73 +9,101 @@ questionsroute.use((req, res, next) => {
   next();
 });
 
-questionsroute.get('/', async (req, res) => {
-  const {
-    text,
-    topic,
-    user,
-  } = req.query;
-  const filter = {};
-  if(topic) filter.topic = topic;
-  if(user) filter.user = user;
-  if(text) filter.text = { $regex: text, $options: 'i',};
+questionsroute.get('/', async (req, res, next) => {
+  try {
+    const {
+      text,
+      topic,
+      user,
+    } = req.query;
+    const filter = {};
+    if (topic) filter.topic = topic;
+    if (user) filter.user = user;
+    if (text) filter.text = { $regex: text, $options: 'i' };
 
-  const questions = await Question.find({...filter});
-  return res.status(200).json(questions);
+    const questions = await Question.find({ ...filter });
+    return res.status(200).json(questions);
+  } catch (error) {
+    next(error);
+  }
 });
 
-questionsroute.get('/me', async (req, res) => {
-  const questions = await Question.find({user: req.user._id });
-  return res.status(200).json(questions);
+questionsroute.get('/me', async (req, res, next) => {
+  try {
+    const questions = await Question.find({ user: req.user._id });
+    return res.status(200).json(questions);
+  } catch (error) {
+    next(error);
+  }
 });
 
-questionsroute.post('/', async (req, res) => {
-  const questionData = {
-    ...req.body,
-    user: req.user._id,
-    responses: [],
-  };
-  const question = new Question(questionData);
-  question.save()
-  return res.status(201).json(question);
+questionsroute.post('/', async (req, res, next) => {
+  try {
+    const questionData = {
+      ...req.body,
+      user: req.user._id,
+      responses: [],
+    };
+    const question = new Question(questionData);
+    question.save();
+    return res.status(201).json(question);
+  } catch (error) {
+    next(error);
+  }
 });
 
-questionsroute.get('/:questionId', async (req, res) => {
-  const question = await Question
-    .findById(req.params.questionId)
-    .populate('user', 'name')
-    .populate('topic', 'title');
+questionsroute.get('/:questionId', async (req, res, next) => {
+  try {
+    const question = await Question
+      .findById(req.params.questionId)
+      .populate('user', 'name')
+      .populate('topic', 'title');
 
-  return res.status(200).json(question);
+    return res.status(200).json(question);
+  } catch (error) {
+    next(error);
+  }
 });
 
-questionsroute.post('/:questionId/answers', async (req, res) => {
-  const answerData = {
-    text: req.body.text,
-    question: req.params.questionId,
-    user: req.user._id,
-  };
-  const answer =  new Answer(answerData);
-  await answer.save();
-  return res.status(201).json(answer);
+questionsroute.post('/:questionId/answers', async (req, res, next) => {
+  try {
+    const answerData = {
+      text: req.body.text,
+      question: req.params.questionId,
+      user: req.user._id,
+    };
+    const answer = new Answer(answerData);
+    await answer.save();
+    return res.status(201).json(answer);
+  } catch (error) {
+    next(error);
+  }
 });
 
-questionsroute.get('/:questionId/answers', async (req, res) => {
-  const answers = await Answer
-    .find({question: req.params.questionId})
-    .populate('user', 'name')
-    .populate('user', 'photo');
+questionsroute.get('/:questionId/answers', async (req, res, next) => {
+  try {
+    const answers = await Answer
+      .find({ question: req.params.questionId })
+      .populate('user', 'name')
+      .populate('user', 'photo');
 
-  return res.status(200).json(answers);
+    return res.status(200).json(answers);
+  } catch (error) {
+    next(error);
+  }
 });
 
-questionsroute.post('/:questionId/answers', async (req, res) => {
-  const answerData = {
-    text: req.body.text,
-    question: req.params.questionId,
-    user: req.user._id,
-  };
-  const answer =  new Answer(answerData);
-  await answer.save();
-  return res.status(201).json(answer);
+questionsroute.post('/:questionId/answers', async (req, res, next) => {
+  try {
+    const answerData = {
+      text: req.body.text,
+      question: req.params.questionId,
+      user: req.user._id,
+    };
+    const answer = new Answer(answerData);
+    await answer.save();
+    return res.status(201).json(answer);
+  } catch (error) {
+    next(error);
+  }
 });

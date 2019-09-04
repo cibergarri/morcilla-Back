@@ -23,7 +23,8 @@ const consoleTransport = new winston.transports.Console({
     winston.format.splat(),
     myFormat,
   ),
-  level: logLevel });
+  level: logLevel,
+});
 
 export const logger = winston.createLogger({
   format: winston.format.combine(

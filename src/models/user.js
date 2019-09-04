@@ -6,7 +6,7 @@ const schema = new Schema({
   email: { type: String },
   photo: { type: String },
   githubId: { type: String, required: [true, 'github id is required'] },
-  status: {type: String, enum: Object.values(USER_STATUS), default: USER_STATUS.INACTIVE},
+  status: { type: String, enum: Object.values(USER_STATUS), default: USER_STATUS.INACTIVE },
 });
 
 export const User = model('User', schema);

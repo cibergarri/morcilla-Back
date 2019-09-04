@@ -1,6 +1,7 @@
 import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { User } from '../../models/user';
+import { logger } from '../winston/log';
 export const jwtConfig = {
   secret: 'secret',
   issuer: 'morcilla',
@@ -8,23 +9,22 @@ export const jwtConfig = {
 };
 
 export const useJwtStrategy = () => {
-  const opts = {}
+  const opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
   opts.secretOrKey = jwtConfig.secret;
   opts.issuer = jwtConfig.issuer;
   opts.audience = jwtConfig.audience;
 
-  passport.use(new JwtStrategy(opts, async(jwt_payload, done) => {
+  passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
     try {
-      const user = await User.findById(jwt_payload.sub);
+      const user = await User.findById(jwtPayload.sub);
       if (user) {
         return done(null, user);
       } else {
-          return done(null, false);
+        return done(null, false);
       }
-    } catch(err) {
-      console.error('error jwt',err);
-    } 
+    } catch (err) {
+      logger.error('error jwt %o', err);
+    }
   }));
 };
-

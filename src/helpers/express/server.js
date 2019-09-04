@@ -8,17 +8,17 @@ import { initializePassport } from '../passport/auth';
 const portNumber = process.env.PORT || 3000;
 export const data = {};
 
-export const initServer = async () => {
-  return new Promise(async (resolve) => {
+export const initServer = () => {
+  return new Promise((resolve) => {
     const app = express();
-    if(process.env.NODE_ENV === 'local'){
-      console.log('cors activated')
+    if (process.env.NODE_ENV === 'local') {
+      console.log('cors activated');
       app.use(cors());
     }
     app.use('/api', bodyParser.urlencoded({ extended: true, limit: '16mb' }));
     app.use('/api', bodyParser.json({ limit: '16mb' }));
     initializePassport(app);
-    app.use(routes);    
+    app.use(routes);
     const server = app.listen(portNumber, () => {
       logger.info('Server listening on port %s!', portNumber);
       data.app = app;

@@ -16,12 +16,12 @@ answersRoute.get('/', async (req, res, next) => {
       user,
     } = req.query;
     const filter = {};
-    if(user) filter.user = user;
-    if(text) filter.text = { $regex: text, $options: 'i',};
-  
-    const answers = await Answer.find({...filter});
+    if (user) filter.user = user;
+    if (text) filter.text = { $regex: text, $options: 'i' };
+
+    const answers = await Answer.find({ ...filter });
     return res.status(200).json(answers);
-  } catch(error){
+  } catch (error) {
     next(error);
   }
 });
@@ -33,7 +33,7 @@ answersRoute.get('/:answerId', async (req, res, next) => {
       .populate('question', 'text');
 
     return res.status(200).json(answer);
-  } catch(error){
+  } catch (error) {
     next(error);
   }
 });
