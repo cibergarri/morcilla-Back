@@ -63,7 +63,8 @@ questionsroute.post('/:questionId/answers', async (req, res) => {
 questionsroute.get('/:questionId/answers', async (req, res) => {
   const answers = await Answer
     .find({question: req.params.questionId})
-    .populate('user', 'name');
+    .populate('user', 'name')
+    .populate('user', 'photo');
 
   return res.status(200).json(answers);
 });

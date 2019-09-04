@@ -4,12 +4,15 @@ const AnswerSchema = new Schema({
   question: { type: Schema.Types.ObjectId, ref: 'Question' },
   text: { type: String },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now },
+  accepted: { type: Boolean, default: false},
 });
 
 const QuestionSchema = new Schema({
   topic: { type: Schema.Types.ObjectId, ref: 'Topic' },
   text: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const TopicSchema = new Schema({
