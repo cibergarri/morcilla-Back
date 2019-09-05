@@ -43,6 +43,7 @@ export class Answer{
     _id: string;
     text:string;
     question: string;
+    accepted:boolean;
     createdAt: string;
     user:UserReference;
 }

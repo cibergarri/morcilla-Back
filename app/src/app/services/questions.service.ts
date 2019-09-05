@@ -39,4 +39,8 @@ export class QuestionsService {
     return this.http.post<Question>(environment.apiUrl + `/api/questions`, question);
   }
 
+  acceptAnswer(answerId:string ){
+    return this.http.put(environment.apiUrl + `/api/answers/${answerId}/accepted`, {accepted:true});
+  }
+
 }

@@ -13,8 +13,9 @@ var pushNotificationEventListener =  ev => {
     actions: [{action: "Ver", title: "Ver"}],
   });
 
-  self.addEventListener('notificationclick', function(event) {
+  self.addEventListener('notificationclick', (event) =>  {
     event.notification.close();
+    console.log("clicked on push", data);
     if (event.action === 'Ver') {
       clients.openWindow("/questions/all?openById="+data.question);
     }
