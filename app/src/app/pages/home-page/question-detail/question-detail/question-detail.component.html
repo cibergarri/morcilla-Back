@@ -21,6 +21,12 @@
         </div>
       </div>
       <div class="text-right text-muted" *ngIf="an.createdAt">{{an.createdAt | date:'medium'}}</div>
+      <div class="text-right">
+        <span *ngIf="an.accepted;else acceptButton" class="badge badge-success">Aceptada</span>
+        <ng-template #acceptButton>
+          <button class="btn btn-outline-primary m-1 btn-sm" (click)="acceptAnswer(an)" [disabled]="executing"><fa-icon icon="check" class="mr-1"></fa-icon>Aceptar</button>
+        </ng-template>
+      </div>
       <hr />
     </div>
   </ng-container>
