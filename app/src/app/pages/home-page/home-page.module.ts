@@ -16,6 +16,7 @@ import { QuestionCardComponent } from './question-card/question-card.component';
 
 
 const routes: Routes = [
+  { path: '', component: HomePageComponent },
   { path: 'me', component: HomePageComponent },
   { path: 'all', component: AllQuestionsPageComponent, resolve: {questions: QuestionsResolver, topics: TopicsResolver}}
 ];
