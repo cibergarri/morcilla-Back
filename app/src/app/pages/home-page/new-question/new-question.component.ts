@@ -36,7 +36,7 @@ export class NewQuestionComponent implements OnInit {
     };
     this.questionsService.newQuestion(newQues).subscribe((e) => {
       this.alertsService.showMessage("Pregunta creada", ToastType.SUCCESS);
-      this.push.push( { type:"push", title: "Tienes una nueva pregunta!", body:e._id  } )
+      this.push.push( { type:"push", title: "Tienes una nueva pregunta!", body:e.text, data: e._id } )
       .subscribe(() => this.activeModal.close(), () => this.activeModal.close());
      
     }, err => this.alertsService.getErrorMessageForStatus(err));
