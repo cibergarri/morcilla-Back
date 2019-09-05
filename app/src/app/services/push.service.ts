@@ -36,6 +36,11 @@ export class PushService {
             register('./worker.js', { scope: '/push/' });
         console.log('Registered service worker');
 
+        const currentSubscription = await registration.pushManager.getSubscription();
+        if (currentSubscription) {
+            console.log('Already registered push');
+            return currentSubscription;
+        }
         console.log('Registering push');
         const subscription = await registration.pushManager.
             subscribe({
