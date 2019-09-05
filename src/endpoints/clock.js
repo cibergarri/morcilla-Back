@@ -17,11 +17,7 @@ clockRoute.use((req, res, next) => {
 
 clockRoute.get('/', async (req, res, next) => {
   try {
-    const {
-      from = moment().add(-7, 'd').hours(0).minutes(0).seconds(0),
-      to = moment().hours(23).minutes(59).seconds(59),
-    } = req.query;
-
+    const { from, to } = getMomentFilters(req.query);
     const clocks = await Clock
       .find({ hour: { $gte: from.format(), $lte: to.format() } })
       .populate('user', 'name')
@@ -36,13 +32,9 @@ clockRoute.get('/', async (req, res, next) => {
 
 clockRoute.get('/me', async (req, res, next) => {
   try {
-    const {
-      from = moment().add(-7, 'd').hours(0).minutes(0).seconds(0),
-      to = moment().hours(23).minutes(59).seconds(59),
-    } = req.query;
-
+    const { from, to } = getMomentFilters(req.query);
     const clocks = await Clock
-      .find({ hour: { $gte: moment(from).format(), $lte: moment(to).format() }, user: req.user._id })
+      .find({ hour: { $gte: from.format(), $lte: to.format() }, user: req.user._id })
       .populate('project', 'name')
       .sort({ hour: -1 }); ;
 
@@ -54,15 +46,11 @@ clockRoute.get('/me', async (req, res, next) => {
 
 clockRoute.get('/summary', async (req, res, next) => {
   try {
-    const {
-      from = moment().add(-7, 'd').hours(0).minutes(0).seconds(0),
-      to = moment().hours(23).minutes(59).seconds(59),
-    } = req.query;
-
+    const { from, to } = getMomentFilters(req.query);
     const filter = {
       hour: {
-        $gte: moment(from).format(),
-        $lte: moment(to).format(),
+        $gte: from.format(),
+        $lte: to.format(),
       },
       user: req.user._id,
     };
@@ -110,3 +98,14 @@ clockRoute.post('/out', async (req, res, next) => {
     next(error);
   }
 });
+
+function getMomentFilters (query) {
+  let { from, to } = query;
+  from = from
+    ? moment(from, 'DD/MM/YY').hours(0).minutes(0).seconds(0)
+    : moment().add(-7, 'd').hours(0).minutes(0).seconds(0);
+  to = to
+    ? moment(to, 'DD/MM/YY').hours(23).minutes(59).seconds(59)
+    : moment().hours(23).minutes(59).seconds(59);
+  return { from, to };
+}

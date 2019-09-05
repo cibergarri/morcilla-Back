@@ -50,7 +50,7 @@ async function getStats (user, from, to) {
   if (from) {
     dateFilter = {
       createdAt: {
-        $gte: moment(from).format(),
+        $gte: moment(from, 'DD/MM/YY').format(),
       },
     };
   }
@@ -60,7 +60,7 @@ async function getStats (user, from, to) {
     }
     dateFilter.createdAt = {
       ...dateFilter.createdAt,
-      $lte: moment(to).format(),
+      $lte: moment(to, 'DD/MM/YY').format(),
     };
   }
   const filter = {
