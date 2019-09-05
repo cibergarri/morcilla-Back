@@ -56,7 +56,7 @@ export class Topic{
 export class PushNotification{
     type?:string = "push";
     title:string;
-    data?:string;
+    question?:string;
     body:string;
 }
 
