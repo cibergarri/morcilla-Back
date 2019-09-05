@@ -40,7 +40,7 @@ export class QuestionsService {
   }
 
   acceptAnswer(answerId:string ){
-    return this.http.put(environment.apiUrl + `/api/answers/${answerId}/accept`, {accepted:true});
+    return this.http.put(environment.apiUrl + `/api/answers/${answerId}/accepted`, {accepted:true});
   }
 
 }
