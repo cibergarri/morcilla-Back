@@ -6,6 +6,8 @@ import { Subscription } from '../models/subscription';
 import { webpush } from '../helpers/notifications/web-push';
 import { Notification } from '../models/notification';
 import { isMandatory } from '../utils/validations';
+import { USER_STATUS } from '../utils/constants';
+import { sendPushNotification } from '../helpers/notifications/sender';
 
 export const notificationsRoute = Router();
 
@@ -29,21 +31,29 @@ notificationsRoute.post('/',
       const notifications = users
         .reduce((ntfctns, usr) => {
           if (usr !== origin) {
-            const notification = new Notification({
+            const notificationData = {
               type,
               title,
               body,
               origin: origin._id,
               destination: usr._id,
               ...(question && { question }),
-            });
+            };
+            if (usr.status === USER_STATUS.ACTIVE) {
+              notificationData.status = 'processing';
+            }
+            const notification = new Notification(notificationData);
             ntfctns.push(notification);
           }
           return ntfctns;
         }, []);
 
       const notificationsSaved = await Notification.create(notifications);
-      return res.status(201).json(notificationsSaved);
+      res.status(201).json(notificationsSaved);
+
+      notificationsSaved
+        .filter(ntfctn => ntfctn.status === 'processing')
+        .map(sendPushNotification);
     } catch (error) {
       next(error);
     }

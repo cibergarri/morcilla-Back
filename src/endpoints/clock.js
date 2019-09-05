@@ -3,7 +3,9 @@ import { Router } from 'express';
 import { logger } from '../helpers/winston/log';
 import { Clock } from '../models/clock';
 import { getUserById } from '../queries/user';
-import { USER_STATUS, CLOCK_OPS } from '../utils/constants';
+import { USER_STATUS, CLOCK_OPS, NOTIFICATION_STATUS } from '../utils/constants';
+import { sendPushNotification } from '../helpers/notifications/sender';
+import { Notification } from '../models/notification';
 
 export const clockRoute = Router();
 
@@ -154,8 +156,13 @@ clockRoute.post('/in', async (req, res, next) => {
     const { project } = req.body;
     const clock = new Clock({ type: CLOCK_OPS.IN, user: req.user._id, project });
     await Promise.all([clock.save(), user.save()]);
-
-    return res.status(201).json(clock);
+    res.status(201).json(clock);
+    Notification.find({
+      destination: req.user._id,
+      status: NOTIFICATION_STATUS.PENDING,
+    }).then(pending => {
+      return Promise.all(pending.map(sendPushNotification));
+    }).catch(logger.error);
   } catch (error) {
     next(error);
   }
