@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { logger } from '../helpers/winston/log';
 import { Answer, Question } from '../models/question';
 import { getClocksSummary } from '../helpers/clock';
+import { User } from '../models/user';
 
 export const statsRoute = Router();
 
@@ -11,6 +12,17 @@ statsRoute.use((req, res, next) => {
   next();
 });
 
+statsRoute.get('/', async (req, res, next) => {
+  try {
+    const { from, to } = req.query;
+    const users = await User.find();
+    const statsByUser = (fr, t) => (user) => getStats(user, fr, t).then(resul => ({ name: user.name, id: user._id, stats: resul }));
+    const stats = await Promise.all(users.map(statsByUser(from, to)));
+    return res.status(200).json(stats);
+  } catch (error) {
+    next(error);
+  }
+});
 statsRoute.get('/me', async (req, res, next) => {
   try {
     const user = req.user._id;
