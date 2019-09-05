@@ -16,7 +16,7 @@ export class PushService {
         this.auth.userEvents.pipe(tap(
             (u) => {  
                 if (u && !this.subscribed) {
-                    this.run().then(() =>  this.subscribed = true);
+                    this.init().then(() =>  this.subscribed = true);
                 }
             })).subscribe(() => {});
         this.auth.logoutEvents.subscribe(() => {
