@@ -6,9 +6,7 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Subject, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
 
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
