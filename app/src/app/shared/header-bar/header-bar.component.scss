@@ -39,10 +39,10 @@
 
 }
 
-.user-inactive{
+.user-inactive > img{
     border:2px solid map-get($theme-colors, danger);
 }
 
-.user-active{
+.user-active > img{
     border:2px solid map-get($theme-colors, success);
 }

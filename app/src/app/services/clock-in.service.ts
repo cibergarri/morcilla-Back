@@ -12,8 +12,8 @@ export class ClockInService {
     constructor(private http: HttpClient) {
     }
 
-    clockIn() {
-        return this.http.post(environment.apiUrl + "/api/clock/in", {});
+    clockIn(projId: string = undefined) {
+        return this.http.post(environment.apiUrl + "/api/clock/in", {project: projId});
     }
 
     clockOut() {

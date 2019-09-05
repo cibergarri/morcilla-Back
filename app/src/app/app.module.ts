@@ -1,3 +1,4 @@
+import { ProjectsService } from './services/projects.service';
 import { ClockInService } from './services/clock-in.service';
 import { PushService } from './services/push.service';
 import { AuthInterceptor } from './auth.interceptor';
@@ -51,6 +52,7 @@ library.add(fas, fab, far);
     TopicsService,
     PushService,
     ClockInService,
+    ProjectsService,
     [{ provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
       { provide: LOCALE_ID, useValue: 'es-ES' }

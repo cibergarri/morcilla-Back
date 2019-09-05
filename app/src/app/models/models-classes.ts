@@ -63,3 +63,8 @@ export class QuestionSearch{
     topicId: string;
     text:string;
 }
+
+export class Project{
+    _id: string;
+    name: string;
+}
