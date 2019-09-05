@@ -10,7 +10,16 @@ var pushNotificationEventListener =  ev => {
     image: data.image || '/push/morcilla.jpg',
     vibrate: [200, 100, 200, 100, 200, 100, 200],
     requireInteraction: true,
+    actions: [{action: "Ver", title: "Ver"}],
   });
+
+  self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    if (event.action === 'Ver') {
+      clients.openWindow("/questions/all?openById="+data.data);
+    }
+  }, false);
+
 };
 
 self.addEventListener('push', pushNotificationEventListener);

@@ -6,6 +6,8 @@
            <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let qu of questions">
              <app-question-card [question]="qu"></app-question-card>
            </div>
-       
+           <button class="btn btn-primary" (click)="testPush()">
+            <fa-icon icon="bug" class=""></fa-icon>
+           </button>
          </div>
        </div>
