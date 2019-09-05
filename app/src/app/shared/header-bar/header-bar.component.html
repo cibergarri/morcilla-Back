@@ -6,11 +6,18 @@
             </span>
             <span class="argentum ml-3">Título</span>
         </a>
-        <button class="btn btn-outline-primary navbar-toggler" type="button" (click)="changeCollapse()">
+
+        <div class=" ml-auto mr-1" *ngIf="auth.currentUser">
+            <img [src]='auth.currentUser?.photo || "assets/imgs/person.png"' (click)="changeStatus()" class="clickable avatar sm" 
+            [ngClass]="auth.currentUser.status === 'active' ? 'user-active':'user-inactive'">
+        </div>
+
+        <button class="btn btn-outline-primary navbar-toggler" type="button" (click)="changeCollapse()"
+            *ngIf="!isLoginRoute()">
             <fa-icon [icon]="'bars'"></fa-icon>
         </button>
 
-        <div class="navbar-collapse justify-content-end" [ngbCollapse]="collapsed">
+        <div class="navbar-collapse flex-grow-0" [ngbCollapse]="collapsed">
             <hr />
             <ul class="navbar-nav">
                 <ng-container *ngIf="!isLoginRoute()">

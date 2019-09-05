@@ -31,7 +31,7 @@ export class HomePageComponent implements OnInit {
         this.router.navigate(["/questions"]);
       }, (err) => this.alertsService.getErrorMessageForStatus(err));
     } else {
-      this.fetchQuestions();
+      this.questions = route.snapshot.data.questions;
     }
   }
 

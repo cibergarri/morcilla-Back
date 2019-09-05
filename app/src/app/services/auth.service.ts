@@ -1,3 +1,4 @@
+import { User } from './../models/models-classes';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -12,6 +13,7 @@ export class AuthService {
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   logoutEvents: Subject<boolean> = new Subject<boolean>();
   loginEvents: Subject<boolean> = new Subject<boolean>();
+  currentUser: User;
 
   static readonly ACCESS_TOKEN: string = "access_token";
 
@@ -42,8 +44,13 @@ export class AuthService {
 
   logout(initiatedByUser: boolean){
     this.storeToken(null);
+    this.currentUser = undefined;
     this.logoutEvents.next(initiatedByUser);
     return of(initiatedByUser);
+  }
+
+  getCurrentUser(){
+    return this.http.get<User>(environment.apiUrl + "/api/users/me").pipe(tap(e => this.currentUser = e));
   }
 
 }

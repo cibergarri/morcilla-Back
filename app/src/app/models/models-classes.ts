@@ -1,4 +1,12 @@
 
+export class User{
+    status: string;
+    _id:string;
+    name: string;
+    photo?: string;
+    email?:string;
+}
+
 export class QuestionLite{
     _id: string;
     topic: string;
