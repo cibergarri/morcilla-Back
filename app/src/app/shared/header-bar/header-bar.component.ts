@@ -2,9 +2,10 @@ import { Project } from './../../models/models-classes';
 import { ProjectsService } from './../../services/projects.service';
 import { switchMap, catchError } from 'rxjs/operators';
 import { ClockInService } from './../../services/clock-in.service';
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,12 +13,13 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './header-bar.component.html',
   styleUrls: ['./header-bar.component.scss']
 })
-export class HeaderBarComponent implements OnInit {
+export class HeaderBarComponent implements OnInit, OnDestroy {
 
   @Input() collapsed: boolean = true;
   @Output() collapsedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   navbarActive = "";
   projects: Project[];
+  userSub: Subscription;
 
   constructor(public router: Router,
     public auth: AuthService,
@@ -27,9 +29,16 @@ export class HeaderBarComponent implements OnInit {
 
   ngOnInit() {
     this.navbarActive = this.isNavbarActive();
-    this.projectsService.getProjects().subscribe(items => { 
-      this.projects = items;
+    this.userSub = this.auth.userEvents.subscribe(() => {
+      this.projectsService.getProjects().subscribe(items => {
+        this.projects = items;
+      });
     });
+
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
   }
 
 
