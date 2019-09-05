@@ -22,17 +22,14 @@ export class AppComponent {
   loaderImg = "assets/imgs/loader.svg";
 
   constructor(public obsAlertsSrv: AlertsService,
-    private router: Router, public auth: AuthService, 
-    public push: PushService) {
+    private router: Router, public auth: AuthService) {
     this.logoutSub = auth.logoutEvents.subscribe(() => {
       this.router.navigate(["/landing"]);
     });
     this.routeNavigation(router);
     if (!this.supportsSvg())
       this.loaderImg = "assets/imgs/loader.gif";
-   
-    push.init().finally(() => this.loadingApp = false);
-   
+      this.loadingApp = false;
   }
 
   private supportsSvg() {

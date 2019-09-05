@@ -7,7 +7,7 @@
             <span class="argentum ml-3">Título</span>
         </a>
 
-        <div class=" ml-auto mr-1" *ngIf="auth.currentUser">
+        <div class=" ml-auto mr-2" *ngIf="auth.currentUser">
             <img [src]='auth.currentUser?.photo || "assets/imgs/person.png"' (click)="changeStatus()" class="clickable avatar sm" 
             [ngClass]="auth.currentUser.status === 'active' ? 'user-active':'user-inactive'">
         </div>
