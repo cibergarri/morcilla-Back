@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { environment } from 'src/environments/environment';
 import { PushNotification } from '../models/models-classes';
 import { AuthService } from './auth.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable()
@@ -13,15 +13,12 @@ export class PushService {
     subscribed = false;
 
     constructor(private http: HttpClient, private auth: AuthService) {
-        this.auth.userEvents.pipe(switchMap(
+        this.auth.userEvents.pipe(tap(
             (u) => {  
                 if (u && !this.subscribed) {
-                    return of(this.run());
+                    this.run().then(() =>  this.subscribed = true);
                 }
-                of(null);
-            })).subscribe(() => {
-                this.subscribed = true;
-            });
+            })).subscribe(() => {});
         this.auth.logoutEvents.subscribe(() => {
             if (this.subscribed && (window as any).pushNotificationEventListener) {
                 window.removeEventListener('push', (window as any).pushNotificationEventListener);
