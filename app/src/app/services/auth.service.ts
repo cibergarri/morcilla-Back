@@ -16,8 +16,11 @@ export class AuthService {
   currentUser: User;
 
   static readonly ACCESS_TOKEN: string = "access_token";
+  rand: number = Math.random();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    console.log(this.rand);
+  }
 
   getToken(code: string) { 
     return this.http.post<string>(environment.apiUrl + `/auth/github/token?code=${code}`, {}).pipe(tap((token) => {

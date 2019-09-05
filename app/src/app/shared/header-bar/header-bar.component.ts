@@ -1,3 +1,4 @@
+import { PushService } from './../../services/push.service';
 import { Project } from './../../models/models-classes';
 import { ProjectsService } from './../../services/projects.service';
 import { switchMap, catchError } from 'rxjs/operators';
@@ -24,17 +25,22 @@ export class HeaderBarComponent implements OnInit, OnDestroy {
   constructor(public router: Router,
     public auth: AuthService,
     public clockInService: ClockInService,
-    public projectsService: ProjectsService) {
+    public projectsService: ProjectsService,
+    public push: PushService) {
   }
 
   ngOnInit() {
     this.navbarActive = this.isNavbarActive();
     this.userSub = this.auth.userEvents.subscribe((u) => {
       if(u){
+        this.push.init();
         this.projectsService.getProjects().subscribe(items => {
           this.projects = items;
         });
       }
+    });
+    this.auth.logoutEvents.subscribe(() => {
+      this.push.unsubscribe();
     });
 
   }

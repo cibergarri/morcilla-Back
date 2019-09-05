@@ -12,29 +12,23 @@ export class PushService {
 
     subscribed = false;
 
-    constructor(private http: HttpClient, private auth: AuthService) {
-        this.auth.userEvents.pipe(tap(
-            (u) => {  
-                if (u && !this.subscribed) {
-                    this.init().then(() =>  this.subscribed = true);
-                }
-            })).subscribe(() => {});
-        this.auth.logoutEvents.subscribe(() => {
-            if (this.subscribed && (window as any).pushNotificationEventListener) {
-                window.removeEventListener('push', (window as any).pushNotificationEventListener);
-                this.subscribed = false;
-            }
-        }) 
+    constructor(private http: HttpClient) {
     }
 
     init() {
-        if ('serviceWorker' in navigator) {
+        if ('serviceWorker' in navigator && !this.subscribed) {
             console.log('Registering service worker');
-            return this.run().catch(error => console.error(error));
+            return this.run().catch(error => console.error(error)).then(() => this.subscribed =true);
         }
         return Promise.resolve();
     }
 
+    unsubscribe(){
+        if (this.subscribed && (window as any).pushNotificationEventListener) {
+            window.removeEventListener('push', (window as any).pushNotificationEventListener);
+            this.subscribed = false;
+        }
+    }
 
     private async run() {
         console.log('Registering service worker');
