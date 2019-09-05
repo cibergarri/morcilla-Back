@@ -4,7 +4,10 @@ import { Observable } from "rxjs";
 import { timeout } from 'rxjs/operators';
 import { environment } from "../environments/environment";
 
-@Injectable()
+@Injectable({
+providedIn:'root',
+
+})
 export class TimeoutInterceptor implements HttpInterceptor {
   constructor() { }
 

@@ -1,18 +1,10 @@
 <div class="container-fluid">
-  <div class="text-light row bg-primary pb-2 pl-1 d-flex justify-content-between align-items-center">
-    <span>Mis Preguntas</span>
-    <button class="btn btn-outline-light mr-2" (click)="newQuestion()">
-      <fa-icon icon="plus"></fa-icon>
-    </button>
-  </div>
+  
+ <app-questions-nav-bar (onNewQuestion)="fetchQuestions()"></app-questions-nav-bar>
+
   <div class="row mt-2">
     <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let qu of questions">
-      <div class="card clickable m-2" (click)="getQuestionDetail(qu._id)">
-        <div class="card-body">
-          <h4 class="h4 card-title">{{qu.text}}</h4>
-          <div class="text-right text-muted">{{qu.createdAt | date:'medium'}}</div>
-        </div>
-      </div>
+     <app-question-card [question]="qu"></app-question-card>
     </div>
 
   </div>

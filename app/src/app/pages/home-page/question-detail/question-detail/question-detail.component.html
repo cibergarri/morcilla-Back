@@ -7,6 +7,7 @@
 <div class="modal-body">
   <div class=""><b>{{question.text}}</b></div>
   <div class="text-primary">{{question.topic?.title}}</div>
+  <div class="text-right text-muted" *ngIf="!me">{{question.user?.name}}</div>
   <div class="text-right text-muted">{{question.createdAt | date:'medium'}}</div>
   <br />
 
@@ -14,10 +15,10 @@
     <h6 class="text-muted text-left font-weight-bold mr-2">{{answers.length}} Respuestas</h6>
     <div *ngFor="let an of answers;">
       <div class="d-flex user-row align-items-center">
-          <img class="avatar" [src]="an.user?.photo || 'assets/imgs/person.png'" /> 
-          <div>
-            <p>{{an.text}}</p>
-          </div>
+        <img class="avatar" [src]="an.user?.photo || 'assets/imgs/person.png'" />
+        <div>
+          <p>{{an.text}}</p>
+        </div>
       </div>
       <div class="text-right text-muted" *ngIf="an.createdAt">{{an.createdAt | date:'medium'}}</div>
       <hr />
@@ -25,6 +26,24 @@
   </ng-container>
   <ng-template #noAnswers>
     <hr />
-    <p class="text-muted"><i>Nadie ha respondido todavía a tu pregunta :(</i></p>
+    <p class="text-muted"><i>Nadie ha respondido todavía a ésta pregunta :(</i></p>
   </ng-template>
+
+  <form [formGroup]="itemForm" (ngSubmit)="answer()" #itemFormTpl="ngForm" novalidate>
+    <div class="form-group">
+      <label for="text"><b>Escribe una respuesta</b></label>
+      <textarea id="text" class="form-control" type="text" name="text" maxlength="800" formControlName="text"
+        placeholder="Se puede resolver así...">
+          </textarea>
+
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary" [disabled]="!itemForm.valid || executing">
+        Responder
+      </button>
+    </div>
+  </form>
+
+
 </div>

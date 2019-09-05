@@ -1,6 +1,6 @@
 console.log('Loaded service worker!');
 
-self.addEventListener('push', ev => {
+window.pushNotificationEventListener =  ev => {
   const data = ev.data.json();
   console.log('Got push', data);
   // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification
@@ -11,4 +11,6 @@ self.addEventListener('push', ev => {
     vibrate: [200, 100, 200, 100, 200, 100, 200],
     requireInteraction: true,
   });
-});
+};
+
+self.addEventListener('push', window.pushNotificationEventListener);
