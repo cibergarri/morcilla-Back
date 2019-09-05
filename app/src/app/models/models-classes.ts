@@ -58,3 +58,8 @@ export class PushNotification{
     title:string;
     body:string;
 }
+
+export class QuestionSearch{
+    topicId: string;
+    text:string;
+}

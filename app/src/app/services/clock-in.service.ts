@@ -1,17 +1,15 @@
+import { catchError } from 'rxjs/operators';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { environment } from 'src/environments/environment';
+import { of } from 'rxjs';
 
 @Injectable()
 export class ClockInService {
 
-    constructor(private http: HttpClient, private auth: AuthService) {
-        this.auth.logoutEvents.pipe(switchMap(() => {
-            return this.clockOut();
-        })).subscribe(() => { });
-
+    constructor(private http: HttpClient) {
     }
 
     clockIn() {

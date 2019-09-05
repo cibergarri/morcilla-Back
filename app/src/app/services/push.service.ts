@@ -13,7 +13,7 @@ export class PushService {
     subscribed = false;
 
     constructor(private http: HttpClient, private auth: AuthService) {
-        this.auth.loginEvents.pipe(switchMap(
+        this.auth.userEvents.pipe(switchMap(
             () => {
                 if (!this.subscribed) {
                     return of(this.run());
@@ -27,7 +27,7 @@ export class PushService {
                 window.removeEventListener('push', (window as any).pushNotificationEventListener);
                 this.subscribed = false;
             }
-        })
+        }) 
     }
 
     init() {

@@ -1,9 +1,10 @@
+import { switchMap } from 'rxjs/operators';
 import { User } from './../models/models-classes';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject, Subject, of } from 'rxjs';
-import { switchMap, catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Subject, of, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,14 @@ export class AuthService {
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   logoutEvents: Subject<boolean> = new Subject<boolean>();
   loginEvents: Subject<boolean> = new Subject<boolean>();
+  userEvents: Subject<User> = new Subject<User>();
   currentUser: User;
 
   static readonly ACCESS_TOKEN: string = "access_token";
 
   constructor(private http: HttpClient) { }
 
-  getToken(code: string) {
+  getToken(code: string) { 
     return this.http.post<string>(environment.apiUrl + `/auth/github/token?code=${code}`, {}).pipe(tap((token) => {
       if(token)
         this.storeToken(token);
@@ -28,10 +30,11 @@ export class AuthService {
   }
 
   silentLogin() {
-    return this.http.get<any>(environment.apiUrl + "/auth/github").pipe(switchMap(res => {
+    return throwError({status : 401, text:"not implemented for demo"});
+   /* return this.http.get<any>(environment.apiUrl + "/auth/github").pipe(switchMap(res => {
       const code = res.code;
       return this.getToken(code);
-    }),catchError((err) => {err.status = 401; throw err; }));
+    }),catchError((err) => {err.status = 401; throw err; }));*/
   }
 
   getStoredToken() {
@@ -50,7 +53,11 @@ export class AuthService {
   }
 
   getCurrentUser(){
-    return this.http.get<User>(environment.apiUrl + "/api/users/me").pipe(tap(e => this.currentUser = e));
+    return this.http.get<User>(environment.apiUrl + "/api/users/me")
+    .pipe(tap(e => {
+       this.currentUser = e;
+      this.userEvents.next(e);
+    }));
   }
 
 }

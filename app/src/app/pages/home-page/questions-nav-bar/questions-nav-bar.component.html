@@ -1,0 +1,33 @@
+<div class="text-light nav-bar row bg-primary pb-2 d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <div>
+        <button class="btn btn-link text-light ml-1 mr-1" [routerLink]="['/questions', 'me']"
+            routerLinkActive="underline">
+            <fa-icon icon="user" class="mr-1"></fa-icon>
+            <span>Mis Preguntas</span>
+        </button>
+        <button class="btn btn-link text-light ml-1 mr-1" [routerLink]="['/questions','all']"
+            routerLinkActive="underline">
+            <fa-icon icon="user-friends" class="mr-1"></fa-icon>
+            <span>Todas</span>
+        </button>
+    </div>
+
+    <div class="filter-items d-flex pr-2 pl-2" *ngIf="showSearchControls">
+        <div class="form-group">
+            <input type="text" [ngModel]="search.text" (ngModelChange)="onTextChange($event)" class="form-control" id="text" placeholder="Buscar...">
+        </div>
+        <div class="form-group">
+                <select class="form-control" name="topic" [ngModel]="search.topicId" (ngModelChange)="onTopicChange($event)"  >
+                        <option value="">Todos</option>
+                        <option *ngFor="let c of topics" [value]="c._id">{{c.title}}</option>
+                </select>
+            </div>
+    </div>
+
+    <div class="add-button p-2">
+        <button class="btn btn-outline-light" (click)="onQuestionAddClick()">
+            <fa-icon icon="plus"></fa-icon>
+        </button>
+    </div>
+ 
+</div>

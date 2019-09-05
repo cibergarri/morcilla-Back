@@ -1,3 +1,4 @@
+import { switchMap, catchError } from 'rxjs/operators';
 import { ClockInService } from './../../services/clock-in.service';
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
@@ -37,7 +38,10 @@ export class HeaderBarComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout(true).subscribe(() => { });
+    this.clockInService.clockOut().pipe(
+      switchMap(() => this.auth.logout(true)),
+      catchError(() =>  this.auth.logout(true))
+    ).subscribe(() => { });
   }
 
   isLoginRoute() {
