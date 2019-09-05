@@ -68,7 +68,7 @@ export class AllQuestionsPageComponent implements OnInit, OnDestroy {
   }
   testPush(){
     let qu = this.questions[0];
-    this.push.push({ title: "Mensaje de prueba", body:qu.text, data: qu._id  }).subscribe(() => {});
+    this.push.push({ type:"push", title: "Mensaje de prueba", body:qu.text, data: qu._id  }).subscribe(() => {});
   }
 
 }
