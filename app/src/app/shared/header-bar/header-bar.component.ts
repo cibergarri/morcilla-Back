@@ -29,10 +29,12 @@ export class HeaderBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.navbarActive = this.isNavbarActive();
-    this.userSub = this.auth.userEvents.subscribe(() => {
-      this.projectsService.getProjects().subscribe(items => {
-        this.projects = items;
-      });
+    this.userSub = this.auth.userEvents.subscribe((u) => {
+      if(u){
+        this.projectsService.getProjects().subscribe(items => {
+          this.projects = items;
+        });
+      }
     });
 
   }

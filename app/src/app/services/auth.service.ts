@@ -12,7 +12,7 @@ export class AuthService {
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   logoutEvents: Subject<boolean> = new Subject<boolean>();
   loginEvents: Subject<boolean> = new Subject<boolean>();
-  userEvents: Subject<User> = new Subject<User>();
+  userEvents: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   currentUser: User;
 
   static readonly ACCESS_TOKEN: string = "access_token";

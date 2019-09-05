@@ -14,8 +14,8 @@ export class PushService {
 
     constructor(private http: HttpClient, private auth: AuthService) {
         this.auth.userEvents.pipe(switchMap(
-            () => {
-                if (!this.subscribed) {
+            (u) => {  
+                if (u && !this.subscribed) {
                     return of(this.run());
                 }
                 of(null);
