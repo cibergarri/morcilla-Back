@@ -1,4 +1,4 @@
-# App
+# Coconut
 
 Running version of this app in `https://morcilla-conf-hackathon.herokuapp.com`
 
