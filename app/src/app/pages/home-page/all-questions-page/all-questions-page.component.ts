@@ -33,7 +33,7 @@ export class AllQuestionsPageComponent implements OnInit, OnDestroy {
       })
       const openById = route.snapshot.queryParams.openById;
       if(openById){
-
+        this.openQuestion(openById);
       }
   }
 

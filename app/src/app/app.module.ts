@@ -24,6 +24,8 @@ import { TimeoutInterceptor } from './timeout.interceptor';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { QuestionsService } from './services/questions.service';
 import { TopicsService } from './services/topics.service';
+import { StatsService } from './services/stats.service';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 registerLocaleData(localeEs, 'es');
 
@@ -43,7 +45,9 @@ library.add(fas, fab, far);
     AppRoutingModule,
     BrowserAnimationsModule,
     LoadingBarHttpClientModule,
+    NgCircleProgressModule.forRoot(),
     SharedModule,
+   
   ],
   providers: [
     AuthService,
@@ -53,6 +57,7 @@ library.add(fas, fab, far);
     PushService,
     ClockInService,
     ProjectsService,
+    StatsService,
     [{ provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
       { provide: LOCALE_ID, useValue: 'es-ES' }
