@@ -9,6 +9,8 @@ Running version of this app in `https://morcilla-conf-hackathon.herokuapp.com`
 - Click on a question to answer it and to see other answers.
 - Click in the 'Aceptar' button next to an answer to accept it as a valid answer
 
+# Backend
+
 ## Development server
 
 Run `npm run debug` for a dev server. The api will be exposed at `http://localhost:3000/`
@@ -21,3 +23,6 @@ Run `npm run build` to build the project in the /build folder
 
 Run `npm run test` to execute the unit tests via Mocha.
 
+# Frontend
+
+You can find the frontend files inside `app` folder
