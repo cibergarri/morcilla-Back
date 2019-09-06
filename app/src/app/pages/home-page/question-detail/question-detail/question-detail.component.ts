@@ -38,6 +38,7 @@ export class QuestionDetailComponent implements OnInit {
       if(!r.user.photo)
         r.user = this.auth.currentUser;
       this.answers.push(r)
+      this.itemForm.patchValue( { text:""});
     }
      , (err) => this.alertsService.getErrorMessageForStatus(err)
    );
