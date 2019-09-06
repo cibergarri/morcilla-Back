@@ -5,8 +5,8 @@ install:
   - npm install
   - npm run install-front
 
-# before_script:
-  # - npm run test
+before_script:
+  - npm run test
 script:
   - npm run build
   - npm run build-front

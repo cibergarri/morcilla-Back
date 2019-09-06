@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { environment } from 'src/environments/environment';
 import { PushNotification } from '../models/models-classes';
 import { AuthService } from './auth.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable()
@@ -12,32 +12,23 @@ export class PushService {
 
     subscribed = false;
 
-    constructor(private http: HttpClient, private auth: AuthService) {
-        this.auth.userEvents.pipe(switchMap(
-            () => {
-                if (!this.subscribed) {
-                    return of(this.run());
-                }
-                of(null);
-            })).subscribe(() => {
-                this.subscribed = true;
-            });
-        this.auth.logoutEvents.subscribe(() => {
-            if (this.subscribed && (window as any).pushNotificationEventListener) {
-                window.removeEventListener('push', (window as any).pushNotificationEventListener);
-                this.subscribed = false;
-            }
-        }) 
+    constructor(private http: HttpClient) {
     }
 
     init() {
-        if ('serviceWorker' in navigator) {
+        if ('serviceWorker' in navigator && !this.subscribed) {
             console.log('Registering service worker');
-            return this.run().catch(error => console.error(error));
+            return this.run().catch(error => console.error(error)).then(() => this.subscribed =true);
         }
         return Promise.resolve();
     }
 
+    unsubscribe(){
+        if (this.subscribed && (window as any).pushNotificationEventListener) {
+            window.removeEventListener('push', (window as any).pushNotificationEventListener);
+            this.subscribed = false;
+        }
+    }
 
     private async run() {
         console.log('Registering service worker');
@@ -45,6 +36,11 @@ export class PushService {
             register('./worker.js', { scope: '/push/' });
         console.log('Registered service worker');
 
+        const currentSubscription = await registration.pushManager.getSubscription();
+        if (currentSubscription) {
+            console.log('Already registered push');
+            return currentSubscription;
+        }
         console.log('Registering push');
         const subscription = await registration.pushManager.
             subscribe({

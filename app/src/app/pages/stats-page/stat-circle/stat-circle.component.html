@@ -1,0 +1,14 @@
+
+<circle-progress [maxPercent]="100" [percent]="getPercentage(amount, level)"
+    [title]="'Nivel ' + level.level.level" [titleFontSize]="25" [units]="''"
+    [subtitleFontSize]="13" [subtitleFontWeight]="300"
+    [subtitle]="level.nextAmount +' Para siguiente nivel'" [titleColor]="'black'"
+    [radius]="100" [outerStrokeWidth]="5" [innerStrokeWidth]="20"
+    [outerStrokeColor]="level.level.color" [innerStrokeColor]="level.level.color"
+    [animation]="true" [animationDuration]="300">
+</circle-progress>
+<div class="card-text text-muted" *ngIf="level.level.level; else noLevel">
+    Estás en el nivel {{level.level.title}}. ¡Bien Hecho!
+</div>
+
+<ng-template #noLevel><div class="card-text text-muted">Todavía estás en el nivel Novato. ¡Sigue esforzándote!</div></ng-template>

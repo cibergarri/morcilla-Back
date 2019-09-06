@@ -1,5 +1,5 @@
 import { AuthService } from './../../../../services/auth.service';
-import { AlertsService } from './../../../../services/alerts.service';
+import { AlertsService, ToastType } from './../../../../services/alerts.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Question, Answer } from './../../../../models/models-classes';
@@ -38,9 +38,17 @@ export class QuestionDetailComponent implements OnInit {
       if(!r.user.photo)
         r.user = this.auth.currentUser;
       this.answers.push(r)
+      this.itemForm.patchValue( { text:""});
     }
      , (err) => this.alertsService.getErrorMessageForStatus(err)
    );
+  }
+
+  acceptAnswer(an:Answer){
+    this.questionsService.acceptAnswer(an._id).subscribe(() => { 
+      an.accepted = true;
+      this.alertsService.showMessage("¡Gracias por aceptar la respuesta!", ToastType.SUCCESS);
+    }, err => this.alertsService.getErrorMessageForStatus(err));
   }
 
 }

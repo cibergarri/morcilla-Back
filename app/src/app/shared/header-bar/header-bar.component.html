@@ -2,26 +2,27 @@
     <nav class="navbar navbar-expand-md bg-white header-navbar flex-wrap">
         <a class="navbar-brand" [routerLink]="['/']" aria-label="Logo">
             <span>
-                <!-- Logo goes here <img src="assets/imgs/logo.png" height="30" alt="Logo">-->
+                <img src="assets/imgs/logo.png" height="30" alt="Logo">
             </span>
-            <span class="argentum ml-3">Título</span>
+            <span class="argentum ml-3">Coconut</span>
         </a>
 
-        <div class="user-active ml-auto mr-2" *ngIf="auth.currentUser?.status === 'active'; else inactiveUser">
-            <img [src]='auth.currentUser.photo || "assets/imgs/person.png"' (click)="changeStatus()"
-                class="clickable avatar sm">
-        </div>
-        <ng-template #inactiveUser>
-            <div class="user-inactive ml-auto mr-2" ngbDropdown display="dynamic" placement="bottom-right">
-                <img ngbDropdownToggle (click)="changeStatus()" [src]='auth.currentUser?.photo || "assets/imgs/person.png"' class="clickable avatar sm">
-                <div ngbDropdownMenu>
-                    <button ngbDropdownItem (click)="clockIn(proj._id)"
-                        *ngFor="let proj of projects">{{proj.name}}</button>
-                </div>
+        <ng-container *ngIf="auth.currentUser">
+            <div class="user-active ml-auto mr-2" *ngIf="auth.currentUser.status === 'active'; else inactiveUser">
+                <img [src]='auth.currentUser.photo || "assets/imgs/person.png"' (click)="changeStatus()"
+                    class="clickable avatar sm">
             </div>
-
-        </ng-template>
-
+            <ng-template #inactiveUser>
+                <div class="user-inactive ml-auto mr-2" ngbDropdown display="dynamic" placement="bottom-right">
+                    <img ngbDropdownToggle (click)="changeStatus()" [src]='auth.currentUser?.photo || "assets/imgs/person.png"' class="clickable avatar sm">
+                    <div ngbDropdownMenu>
+                        <button ngbDropdownItem (click)="clockIn(proj._id)"
+                            *ngFor="let proj of projects">{{proj.name}}</button>
+                    </div>
+                </div>
+    
+            </ng-template>
+        </ng-container>
 
         <button class="btn btn-outline-primary navbar-toggler" type="button" (click)="changeCollapse()"
             *ngIf="!isLoginRoute()">
@@ -39,6 +40,12 @@
                             Preguntas
                         </a>
                     </li>
+                    <li class="nav-item">
+                            <a class="nav-link" routerLink="/stats/">
+                                <fa-icon [icon]="'chart-bar'"></fa-icon>
+                                Progreso
+                            </a>
+                        </li>
                     <li class="nav-item">
                         <button class="nav-link btn-block btn btn-link"
                             style="text-align:start;border-top:0; border-bottom:0" (click)="logout()">

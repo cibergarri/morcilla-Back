@@ -1,12 +1,12 @@
 /* global before, after, it */
 // eslint-disable-next-line no-unused-vars
 import { chai } from '../helpers/chai';
-import { init, data, close } from '../../src/helpers/express/server';
+import { initServer, data, close } from '../../src/helpers/express/server';
 
 before(async () => {
   console.info('executing pre-tests code');
   // initialize app / do global stubs here
-  await init();
+  await initServer();
 });
 
 it('should have started the app', () => {

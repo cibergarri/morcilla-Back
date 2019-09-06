@@ -9,6 +9,7 @@ import { projectsRoute } from '../../endpoints/projects';
 import { topicsRoute } from '../../endpoints/topics';
 import { questionsroute } from '../../endpoints/questions';
 import { usersRoute } from '../../endpoints/users';
+import { statsRoute } from '../../endpoints/stats';
 
 // import { docsRoute } from '../swagger/docs';
 
@@ -18,6 +19,7 @@ apiRoutes.use('/clock', clockRoute);
 apiRoutes.use('/notifications', notificationsRoute);
 apiRoutes.use('/projects', projectsRoute);
 apiRoutes.use('/questions', questionsroute);
+apiRoutes.use('/stats', statsRoute);
 apiRoutes.use('/topics', topicsRoute);
 apiRoutes.use('/users', usersRoute);
 

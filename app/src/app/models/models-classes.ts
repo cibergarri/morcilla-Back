@@ -43,6 +43,7 @@ export class Answer{
     _id: string;
     text:string;
     question: string;
+    accepted:boolean;
     createdAt: string;
     user:UserReference;
 }
@@ -56,6 +57,7 @@ export class Topic{
 export class PushNotification{
     type?:string = "push";
     title:string;
+    question?:string;
     body:string;
 }
 
@@ -67,4 +69,39 @@ export class QuestionSearch{
 export class Project{
     _id: string;
     name: string;
+}
+
+export class UserStats{
+    answers:StatAnswers;
+    questions:number;
+    workingHours: StatWorkingHours;
+}
+
+export class StatWorkingHours{
+    total: StatTimeTotal;
+    totalsByProject: any; //key-val StatTimeTotal
+}
+
+export class StatTimeTotal{
+    hours: number;
+    minutes:number;
+    name?:string;
+}
+
+
+export class StatAnswers{
+    total:number;
+    accepted:number;
+}
+
+export class StatLevel{
+    level:number;
+    color:string;
+    amount:number;
+    title:string;
+}
+
+export class StatLevelResult{
+    level:StatLevel;
+    nextAmount:number;
 }
