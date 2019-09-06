@@ -8,8 +8,7 @@ install:
 before_script:
   - npm run test
 script:
-  - npm run build
-  - npm run build-front
+  - npm run build:prod
 cache:
   directories:
     - node_modules

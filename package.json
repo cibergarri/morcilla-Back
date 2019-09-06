@@ -12,6 +12,7 @@
     "build": "npm run clean && babel src --out-dir build",
     "install-front": "cd app && npm install",
     "build-front": "cd app && npm run build",
+    "build:prod": "npm run build && cd app && npm run build:prod",
     "start": "node build/index.js",
     "debug": "nodemon --inspect --exec babel-node debug.js",
     "lint": "./node_modules/.bin/eslint src test",
