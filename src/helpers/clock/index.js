@@ -63,7 +63,7 @@ export const getClocksSummary = async (filter) => {
     });
     const durationsByProject = dayResult.smm
       .reduce((resultsByProj, proj) => {
-        const projName = proj.project ? proj.project.name : '-';
+        const projName = proj.project ? proj.project.name : 'Sin Proyecto';
         resultsByProj[projName] = (resultsByProj[projName] || 0) + proj.duration;
         return resultsByProj;
       }, {});
