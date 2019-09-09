@@ -1,5 +1,15 @@
 # Coconut
 
+Winner Project of the 1st MorcillaConf Hackathon. http://morcillaconf.es/hackathon
+
+## Authors
+
+  - Rubén Antón
+  
+  - Javier Garrido
+
+## Instructions
+
 Running version of this app in `https://morcilla-conf-hackathon.herokuapp.com`
 
 - Log through your github user
