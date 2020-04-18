@@ -1,6 +1,6 @@
 # Coconut
 
-Winner Project of the 1st MorcillaConf Hackathon. http://morcillaconf.es/hackathon
+**Winner Project of the 1st MorcillaConf Hackathon. http://morcillaconf.es/hackathon**
 
 ## Authors
 
